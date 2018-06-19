@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function civicrm_newsletter_menu() {
+  $items = array();
+
+  $items['admin/config/services/civicrm_newsletter'] = array(
+    'title' => 'CiviCRM Advanced Newsletter Management',
+    'description' => 'Configure CiviCRM Advanced Newsletter Management',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_civicrm_newsletter_config_form'),
+    'access arguments' => array('administer civicrm newsletter'),
+    'file' => 'civicrm_newsletter.admin.inc',
+  );
+
+  $items['civicrm_newsletter/subscribe'] = array(
+    'title' => 'Subscribe to CiviCRM newsletters',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_civicrm_newsletter_subscription_form'),
+    'access arguments' => array('access civicrm newsletter subscription form'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function civicrm_newsletter_permission() {
+  $permissions = array();
+
+  $permissions['access civicrm newsletter public form'] = array(
+    'title' => t('Access newsletter subscription form'),
+    'description' => t('Allow users to access the public newsletter subscription form.'),
+  );
+
+  return $permissions;
+}
+
+/**
+ * Builds the public subscription form.
+ */
+function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_id) {
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
+
+  $cmrf_profile = _civicrm_newsletter_get_cmrf_profile();
+
+  // TODO: Retrieve CiviCRM Advanced Newsletter Management extension configuration for given profile ID.
+  _civicrm_newsletter_send_call('ENTITY', 'ACTION', array(), array(), $cmrf_profile);
+
+  // TODO: Build form according to recveived configuration.
+
+  return $form;
+}
