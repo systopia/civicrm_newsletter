@@ -18,8 +18,20 @@ function civicrm_newsletter_menu() {
   $items['civicrm_newsletter/subscribe'] = array(
     'title' => 'Subscribe to CiviCRM newsletters',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('_civicrm_newsletter_subscription_form'),
+    'page arguments' => array('_civicrm_newsletter_subscription_form', 2),
     'access arguments' => array('access civicrm newsletter subscription form'),
+  );
+  $items['civicrm_newsletter/preferences/%/%'] = array(
+    'title' => 'CiviCRM newsletters preferences',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_civicrm_newsletter_preferences_form', 2, 3),
+    'access arguments' => array('access civicrm newsletter preferences form'),
+  );
+  $items['civicrm_newsletter/request_link'] = array(
+    'title' => 'Request a link to CiviCRM newsletters preferences',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('_civicrm_newsletter_request_form'),
+    'access arguments' => array('access civicrm newsletter request form'),
   );
 
   return $items;
@@ -35,6 +47,14 @@ function civicrm_newsletter_permission() {
     'title' => t('Access newsletter subscription form'),
     'description' => t('Allow users to access the public newsletter subscription form.'),
   );
+  $permissions['access civicrm newsletter preferences form'] = array(
+    'title' => t('Access newsletter preferences form'),
+    'description' => t('Allow users to access the newsletter preferences form.'),
+  );
+  $permissions['access civicrm newsletter request form'] = array(
+    'title' => t('Access newsletter request form'),
+    'description' => t('Allow users to access the request link form.'),
+  );
 
   return $permissions;
 }
@@ -44,13 +64,64 @@ function civicrm_newsletter_permission() {
  */
 function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_id) {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-
   $cmrf_profile = _civicrm_newsletter_get_cmrf_profile();
 
   // TODO: Retrieve CiviCRM Advanced Newsletter Management extension configuration for given profile ID.
-  _civicrm_newsletter_send_call('ENTITY', 'ACTION', array(), array(), $cmrf_profile);
+  $parameters = array();
+  if ($profile_id) {
+    $parameters['profile_id'] = $profile_id;
+  }
+  $profile = _civicrm_newsletter_send_call(
+    'ENTITY',
+    'ACTION',
+    $parameters,
+    array(),
+    $cmrf_profile
+  );
 
-  // TODO: Build form according to recveived configuration.
+  // TODO: Build form according to received configuration.
+  // TODO: Set page title according to received configuration.
 
   return $form;
+}
+
+/**
+ * Processes the submitted public subscription form.
+ */
+function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
+
+}
+
+/**
+ * Builds the preferences form for a CiviCRM contact.
+ */
+function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_id) {
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
+  $cmrf_profile = _civicrm_newsletter_get_cmrf_profile();
+
+  // TODO: Retrieve CiviCRM Advanced Newsletter Management extension configuration for given profile ID and contact hash.
+  // TODO: Set page title according to received configuration.
+
+  return $form;
+}
+
+/**
+ * Processes the submitted preferences form for a CiviCRM contact.
+ */
+function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
+
+}
+
+/**
+ * Builds the request link form.
+ */
+function _civicrm_newsletter_request_form($form, &$form_state)  {
+  // TODO: Get configuration (contact fields) from CiviCRM API.
+}
+
+/**
+ * Processes the submitted request link form.
+ */
+function _civicrm_newsletter_request_form_submit($form, &$form_state) {
+
 }
