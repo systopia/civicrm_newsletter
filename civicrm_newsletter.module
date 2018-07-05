@@ -62,25 +62,64 @@ function civicrm_newsletter_permission() {
 /**
  * Builds the public subscription form.
  */
-function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_id) {
+function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_name = 'default') {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-  $cmrf_profile = _civicrm_newsletter_get_cmrf_profile();
 
-  // TODO: Retrieve CiviCRM Advanced Newsletter Management extension configuration for given profile ID.
-  $parameters = array();
-  if ($profile_id) {
-    $parameters['profile_id'] = $profile_id;
+  // Default parameter may be an empty string when coming from menu router.
+  $profile_name = $profile_name ?: 'default';
+
+  // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
+  // given profile.
+  if (!$profile = _civicrm_newsletter_get_profile($profile_name)) {
+    drupal_set_message(
+      t('Could not retrieve the newsletter profile. Please try again later.'),
+      'error'
+    );
   }
-  $profile = _civicrm_newsletter_send_call(
-    'ENTITY',
-    'ACTION',
-    $parameters,
-    array(),
-    $cmrf_profile
-  );
+  else {
+    $form['profile'] = array(
+      '#type' => 'value',
+      '#value' => $profile_name,
+    );
 
-  // TODO: Build form according to received configuration.
-  // TODO: Set page title according to received configuration.
+    // Build form according to received configuration.
+    foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
+      if ($contact_field['active']) {
+        $form[$contact_field_name] = array(
+          '#type' => 'textfield',
+          '#title' => $contact_field['label'],
+          '#description' => $contact_field['description'],
+        );
+      }
+    }
+
+    $form['mailing_lists'] = array(
+      '#type' => 'checkboxes',
+      '#title' => $profile['mailing_lists_label'],
+      '#description' => $profile['mailing_lists_description'],
+      '#options' => $profile['mailing_lists'],
+    );
+
+    if (!empty($profile['conditions_public'])) {
+      $form['conditions_public'] = array(
+        '#type' => 'textarea',
+        '#title' => $profile['conditions_public_label'],
+        '#description' => $profile['conditions_public_description'],
+        '#value' => $profile['conditions_public'],
+        '#disabled' => TRUE,
+      );
+    }
+
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => $profile['submit_label'] ?: t('Submit'),
+    );
+
+    // Set page title according to received configuration.
+    if ($profile['form_title']) {
+      drupal_set_title($profile['form_title']);
+    }
+  }
 
   return $form;
 }
@@ -89,17 +128,22 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_id)
  * Processes the submitted public subscription form.
  */
 function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
-
+  // TODO.
 }
 
 /**
  * Builds the preferences form for a CiviCRM contact.
  */
-function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_id) {
+function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_name = 'default') {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-  $cmrf_profile = _civicrm_newsletter_get_cmrf_profile();
 
-  // TODO: Retrieve CiviCRM Advanced Newsletter Management extension configuration for given profile ID and contact hash.
+  // Default parameter may be an empty string.
+  $profile_name = $profile_name ?: 'default';
+
+  // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
+  // given profile.
+  $profile = _civicrm_newsletter_get_profile($profile_name);
+
   // TODO: Set page title according to received configuration.
 
   return $form;
