@@ -12,9 +12,10 @@ function _civicrm_newsletter_get_cmrf_profile() {
 }
 
 /**
- * TODO
+ * Retrieve or build a CiviMRF connector.
  *
- * @param null $profile
+ * @param string | NULL $profile
+ *   The CiviMRF profile name, or NULL to use the default profile.
  *
  * @return null|string
  */
@@ -34,20 +35,56 @@ function _civicrm_newsletter_get_connector_id($profile = NULL) {
 }
 
 /**
- * TODO
+ * Send a CiviCRM API call using CiviMRF.
  *
- * @param $entity
- * @param $action
- * @param $parameters
- * @param $options
- * @param null $profile
+ * @param string $entity
+ *   The CiviCRM API entity.
+ * @param string $action
+ *   The CiviCRM API action.
+ * @param array $parameters
+ *   The CiviCRM API paramters.
+ * @param array $options
+ *   The CiviCRM API options.
+ * @param string | NULL $cmrf_profile
+ *   The name of the CiviMRF profile, or NULL to use the default profile.
  *
  * @return \CMRF\Core\Call
  */
-function _civicrm_newsletter_send_call($entity, $action, $parameters, $options, $profile = NULL) {
-  $connector_id = _civicrm_newsletter_get_connector_id($profile);
+function _civicrm_newsletter_send_call($entity, $action, $parameters = array(), $options = array(), $cmrf_profile = NULL) {
+  $connector_id = _civicrm_newsletter_get_connector_id($cmrf_profile);
   $core = cmrf_core_get_core();
   $call = $core->createCall($connector_id, $entity, $action, $parameters, $options);
   $core->executeCall($call);
   return $call;
+}
+
+/**
+ * Retrieves the configuration for an Advanced Newsletter Management profile
+ * from CiviCRM.
+ *
+ * @param string $profile_name
+ *   The name of the Advanced Newsletter Management profile.
+ *
+ * @return array | NULL
+ *   The Advanced Newsletter Management profile configuration, or NULL if the
+ *   profile could not be retrieved.
+ */
+function _civicrm_newsletter_get_profile($profile_name) {
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterProfile',
+    'get',
+    array('name' => $profile_name),
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+  if ($reply['is_error'] == 1) {
+    drupal_set_message($reply['error_message'], 'error');
+    $profile = NULL;
+  }
+  else {
+    $profile = reset($reply['values']);
+  }
+
+  return $profile;
 }
