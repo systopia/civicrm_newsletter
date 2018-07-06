@@ -69,7 +69,7 @@ function _civicrm_newsletter_send_call($entity, $action, $parameters = array(), 
  *   The Advanced Newsletter Management profile configuration, or NULL if the
  *   profile could not be retrieved.
  */
-function _civicrm_newsletter_get_profile($profile_name) {
+function _civicrm_newsletter_profile_get($profile_name) {
   $call = _civicrm_newsletter_send_call(
     'NewsletterProfile',
     'get',
@@ -79,7 +79,6 @@ function _civicrm_newsletter_get_profile($profile_name) {
   );
   $reply = $call->getReply();
   if ($reply['is_error'] == 1) {
-    drupal_set_message($reply['error_message'], 'error');
     $profile = NULL;
   }
   else {
@@ -87,4 +86,26 @@ function _civicrm_newsletter_get_profile($profile_name) {
   }
 
   return $profile;
+}
+
+/**
+ * Submits an Advanced Newsletter Management subscription to CiviCRM.
+ *
+ * @param $params
+ *   The CiviCRM API call parameters.
+ *
+ * @return array
+ *   The CiviCRM API call reply.
+ */
+function _civicrm_newsletter_subscription_submit($params) {
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterSubscription',
+    'submit',
+    $params,
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+
+  return $reply;
 }
