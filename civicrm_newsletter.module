@@ -21,7 +21,7 @@ function civicrm_newsletter_menu() {
     'page arguments' => array('_civicrm_newsletter_subscription_form', 2),
     'access arguments' => array('access civicrm newsletter subscription form'),
   );
-  $items['civicrm_newsletter/preferences/%/%'] = array(
+  $items['civicrm_newsletter/preferences/%'] = array(
     'title' => 'CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_preferences_form', 2, 3),
@@ -166,7 +166,54 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
   // given profile.
   $profile = _civicrm_newsletter_profile_get($profile_name);
 
-  // TODO: Set page title according to received configuration.
+  // Retrieve subscription status for contact.
+  $subscription = civicrm_newsletter_subscription_get($contact_hash);
+
+  // Build form according to retrieved configuration:
+  // Add contact fields.
+  foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
+    if ($contact_field['active']) {
+      $form[$contact_field_name] = array(
+        '#type' => 'textfield',
+        '#title' => $contact_field['label'],
+        '#description' => $contact_field['description'],
+        '#default_value' => $subscription['contact'][$contact_field_name],
+        '#disabled' => TRUE,
+      );
+    }
+  }
+
+  // Add mailing lists selection.
+  $form['mailing_lists'] = array(
+    '#type' => 'checkboxes',
+    '#title' => $profile['mailing_lists_label'],
+    '#description' => $profile['mailing_lists_description'],
+    '#options' => $profile['mailing_lists'],
+    // Check added and pending groups.
+    '#default_value' => array_keys($subscription['subscription_status']),
+  );
+
+  // Add terms and conditions.
+  if (!empty($profile['conditions_preferences'])) {
+    $form['conditions_preferences'] = array(
+      '#type' => 'textarea',
+      '#title' => $profile['conditions_preferences_label'],
+      '#description' => $profile['conditions_preferences_description'],
+      '#value' => $profile['conditions_preferences'],
+      '#disabled' => TRUE,
+    );
+  }
+
+  // Add submit button with configured label, if given.
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => $profile['submit_label'] ?: t('Submit'),
+  );
+
+  // Set page title according to received configuration.
+  if ($profile['form_title']) {
+    drupal_set_title($profile['form_title']);
+  }
 
   return $form;
 }

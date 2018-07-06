@@ -89,6 +89,35 @@ function _civicrm_newsletter_profile_get($profile_name) {
 }
 
 /**
+ * Retrieves the subscription status for a given contact hash.
+ *
+ * @param $contact_hash
+ *
+ * @return array | NULL
+ *   The subscription status for the mailing lists defined within the Advanced
+ *   Newsletter Management profile, or NULL if the subscription status could not
+ *   be retrieved.
+ */
+function civicrm_newsletter_subscription_get($contact_hash) {
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterSubscription',
+    'get',
+    array('contact_hash' => $contact_hash),
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+  if (!empty($reply['is_error'])) {
+    $subscription = NULL;
+  }
+  else {
+    $subscription = reset($reply['values']);
+  }
+
+  return $subscription;
+}
+
+/**
  * Submits an Advanced Newsletter Management subscription to CiviCRM.
  *
  * @param $params
