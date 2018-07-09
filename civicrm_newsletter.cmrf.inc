@@ -161,3 +161,26 @@ function _civicrm_newsletter_subscription_confirm($params) {
 
   return $reply;
 }
+
+/**
+ * Requests an Advanced Newsletter Management subscription confirmation link to
+ * be sent by CiviCRM.
+ *
+ * @param $params
+ *   The CiviCRM API call parameters.
+ *
+ * @return array
+ *   The CiviCRM API call reply.
+ */
+function _civicrm_newsletter_subscription_request($params) {
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterSubscription',
+    'request',
+    $params,
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+
+  return $reply;
+}

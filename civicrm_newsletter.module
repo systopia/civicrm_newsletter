@@ -30,7 +30,7 @@ function civicrm_newsletter_menu() {
   $items['civicrm_newsletter/request_link'] = array(
     'title' => 'Request a link to CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('_civicrm_newsletter_request_form'),
+    'page arguments' => array('_civicrm_newsletter_request_form', 2),
     'access arguments' => array('access civicrm newsletter request form'),
   );
 
@@ -96,6 +96,7 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
           '#type' => 'textfield',
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
+          '#required' => TRUE,
         );
       }
     }
@@ -185,9 +186,10 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
     // Retrieve subscription status for contact.
     if (!$subscription = civicrm_newsletter_subscription_get($contact_hash)) {
       drupal_set_message(
-        t('Could not retrieve the newsletter subscription status. Please try again later.'),
-        'error'
+        t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.'),
+        'warning'
       );
+      drupal_goto('civicrm_newsletter/request_link/' . $profile_name);
     }
     else {
       $form['contact_hash'] = array(
@@ -275,13 +277,75 @@ function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
 /**
  * Builds the request link form.
  */
-function _civicrm_newsletter_request_form($form, &$form_state)  {
-  // TODO: Get configuration (contact fields) from CiviCRM API.
+function _civicrm_newsletter_request_form($form, &$form_state, $profile_name = 'default')  {
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
+
+  // Default parameter may be an empty string.
+  $profile_name = $profile_name ?: 'default';
+
+  // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
+  // given profile.
+  if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
+    drupal_set_message(
+      t('Could not retrieve the newsletter profile. Please try again later.'),
+      'error'
+    );
+  }
+  else {
+    // Set page title according to received configuration.
+    if ($profile['form_title']) {
+      drupal_set_title($profile['form_title']);
+    }
+
+    // Include the Advanced Newsletter Management profile name.
+    $form['profile'] = array(
+      '#type' => 'value',
+      '#value' => $profile_name,
+    );
+
+    // Build form according to received configuration:
+    // Add contact fields.
+    foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
+      if ($contact_field['active']) {
+        $form[$contact_field_name] = array(
+          '#type' => 'textfield',
+          '#title' => $contact_field['label'],
+          '#description' => $contact_field['description'],
+          '#required' => TRUE,
+        );
+      }
+    }
+
+    // Add submit button with configured label, if given.
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => t('Submit'),
+    );
+  }
+
+  return $form;
 }
 
 /**
  * Processes the submitted request link form.
  */
 function _civicrm_newsletter_request_form_submit($form, &$form_state) {
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
 
+  // Clean the submitted values from Drupal Form API stuff.
+  $params = $form_state;
+  form_state_values_clean($params);
+  $params = $params['values'];
+
+  // Submit the subscription using CiviMRF.
+  $result = _civicrm_newsletter_subscription_request($params);
+
+  if (!empty($result['is_error'])) {
+    // The API call returned an error, rebuild the form and notify the user.
+    drupal_set_message(t('Your request could not be submitted, please try again later.'), 'error');
+    $form_state['rebuild'] = TRUE;
+  }
+  else {
+    drupal_set_message(t('Your request has been successfully submitted. You will receive an e-mail with a link to a confirmation page.'));
+  }
 }
