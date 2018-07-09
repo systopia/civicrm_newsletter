@@ -77,6 +77,11 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
     );
   }
   else {
+    // Set page title according to received configuration.
+    if ($profile['form_title']) {
+      drupal_set_title($profile['form_title']);
+    }
+
     // Include the Advanced Newsletter Management profile name.
     $form['profile'] = array(
       '#type' => 'value',
@@ -119,11 +124,6 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
       '#type' => 'submit',
       '#value' => $profile['submit_label'] ?: t('Submit'),
     );
-
-    // Set page title according to received configuration.
-    if ($profile['form_title']) {
-      drupal_set_title($profile['form_title']);
-    }
   }
 
   return $form;
@@ -164,55 +164,82 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
-  $profile = _civicrm_newsletter_profile_get($profile_name);
-
-  // Retrieve subscription status for contact.
-  $subscription = civicrm_newsletter_subscription_get($contact_hash);
-
-  // Build form according to retrieved configuration:
-  // Add contact fields.
-  foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
-    if ($contact_field['active']) {
-      $form[$contact_field_name] = array(
-        '#type' => 'textfield',
-        '#title' => $contact_field['label'],
-        '#description' => $contact_field['description'],
-        '#default_value' => $subscription['contact'][$contact_field_name],
-        '#disabled' => TRUE,
-      );
-    }
-  }
-
-  // Add mailing lists selection.
-  $form['mailing_lists'] = array(
-    '#type' => 'checkboxes',
-    '#title' => $profile['mailing_lists_label'],
-    '#description' => $profile['mailing_lists_description'],
-    '#options' => $profile['mailing_lists'],
-    // Check added and pending groups.
-    '#default_value' => array_keys($subscription['subscription_status']),
-  );
-
-  // Add terms and conditions.
-  if (!empty($profile['conditions_preferences'])) {
-    $form['conditions_preferences'] = array(
-      '#type' => 'textarea',
-      '#title' => $profile['conditions_preferences_label'],
-      '#description' => $profile['conditions_preferences_description'],
-      '#value' => $profile['conditions_preferences'],
-      '#disabled' => TRUE,
+  if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
+    drupal_set_message(
+      t('Could not retrieve the newsletter profile. Please try again later.'),
+      'error'
     );
   }
+  else {
+    // Set page title according to received configuration.
+    if ($profile['form_title']) {
+      drupal_set_title($profile['form_title']);
+    }
 
-  // Add submit button with configured label, if given.
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => $profile['submit_label'] ?: t('Submit'),
-  );
+    // Include the Advanced Newsletter Management profile name.
+    $form['profile'] = array(
+      '#type' => 'value',
+      '#value' => $profile_name,
+    );
 
-  // Set page title according to received configuration.
-  if ($profile['form_title']) {
-    drupal_set_title($profile['form_title']);
+    // Retrieve subscription status for contact.
+    if (!$subscription = civicrm_newsletter_subscription_get($contact_hash)) {
+      drupal_set_message(
+        t('Could not retrieve the newsletter subscription status. Please try again later.'),
+        'error'
+      );
+    }
+    else {
+      $form['contact_hash'] = array(
+        '#type' => 'value',
+        '#value' => $subscription['contact']['hash'],
+      );
+      $form['contact_id'] = array(
+        '#type' => 'value',
+        '#value' => $subscription['contact']['id'],
+      );
+
+      // Build form according to retrieved configuration:
+      // Add contact fields.
+      foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
+        if ($contact_field['active']) {
+          $form[$contact_field_name] = array(
+            '#type' => 'textfield',
+            '#title' => $contact_field['label'],
+            '#description' => $contact_field['description'],
+            '#default_value' => $subscription['contact'][$contact_field_name],
+            '#disabled' => TRUE,
+          );
+        }
+      }
+
+      // Add mailing lists selection.
+      $form['mailing_lists'] = array(
+        '#type' => 'checkboxes',
+        '#title' => $profile['mailing_lists_label'],
+        '#description' => $profile['mailing_lists_description'],
+        '#options' => $profile['mailing_lists'],
+        // Check added and pending groups.
+        '#default_value' => array_keys($subscription['subscription_status']),
+      );
+
+      // Add terms and conditions.
+      if (!empty($profile['conditions_preferences'])) {
+        $form['conditions_preferences'] = array(
+          '#type' => 'textarea',
+          '#title' => $profile['conditions_preferences_label'],
+          '#description' => $profile['conditions_preferences_description'],
+          '#value' => $profile['conditions_preferences'],
+          '#disabled' => TRUE,
+        );
+      }
+
+      // Add submit button with configured label, if given.
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => $profile['submit_label'] ?: t('Submit'),
+      );
+    }
   }
 
   return $form;
@@ -222,7 +249,27 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
  * Processes the submitted preferences form for a CiviCRM contact.
  */
 function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
 
+  // Clean the submitted values from Drupal Form API stuff.
+  $params = $form_state;
+  form_state_values_clean($params);
+  $params = $params['values'];
+  $params['mailing_lists'] = array_map(function($value) {
+    return ($value ? 'Added' : 'Removed');
+  }, $params['mailing_lists']);
+
+  // Submit the subscription using CiviMRF.
+  $result = _civicrm_newsletter_subscription_confirm($params);
+
+  if (!empty($result['is_error'])) {
+    // The API call returned an error, rebuild the form and notify the user.
+    drupal_set_message(t('Your confirmation could not be submitted, please try again later.'), 'error');
+    $form_state['rebuild'] = TRUE;
+  }
+  else {
+    drupal_set_message(t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.'));
+  }
 }
 
 /**
