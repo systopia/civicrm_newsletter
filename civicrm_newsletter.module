@@ -267,6 +267,7 @@ function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
   }, $params['mailing_lists']);
 
   // Submit the subscription using CiviMRF.
+  // TODO: Global Opt-out?
   $result = _civicrm_newsletter_subscription_confirm($params);
 
   if (!empty($result['is_error'])) {
