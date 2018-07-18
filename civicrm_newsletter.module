@@ -47,7 +47,7 @@ function civicrm_newsletter_permission() {
     'title' => t('Administer CiviCRM Advanced Newsletter Management'),
     'description' => t('Allow users to configure the module.')
   );
-  $permissions['access civicrm newsletter public form'] = array(
+  $permissions['access civicrm newsletter subscription form'] = array(
     'title' => t('Access newsletter subscription form'),
     'description' => t('Allow users to access the public newsletter subscription form.'),
   );
