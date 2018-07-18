@@ -3,6 +3,6 @@ description = In combination with the "Advanced Newsletter Management" extension
 core = 7.x
 package = CiviCRM
 
-version = 7.x-0.4-dev
+version = 7.x-0.4
 
 dependencies[] = cmrf_core
