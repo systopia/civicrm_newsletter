@@ -233,12 +233,19 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
       foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
         if ($contact_field['active']) {
           $form[$contact_field_name] = array(
-            '#type' => 'textfield',
+            '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
             '#title' => $contact_field['label'],
             '#description' => $contact_field['description'],
             '#default_value' => $subscription['contact'][$contact_field_name],
+            '#required' => !empty($contact_field['required']),
             '#disabled' => TRUE,
           );
+          if (!empty($contact_field['options'])) {
+            $form[$contact_field_name]['#options'] = $contact_field['options'];
+            if (empty($contact_field['required'])) {
+              $form[$contact_field_name]['#empty_option'] = t('- None -');
+            }
+          }
         }
       }
 
@@ -341,11 +348,17 @@ function _civicrm_newsletter_request_form($form, &$form_state, $profile_name = '
     foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
       if ($contact_field['active']) {
         $form[$contact_field_name] = array(
-          '#type' => 'textfield',
+          '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#required' => !empty($contact_field['required']),
         );
+        if (!empty($contact_field['options'])) {
+          $form[$contact_field_name]['#options'] = $contact_field['options'];
+          if (empty($contact_field['required'])) {
+            $form[$contact_field_name]['#empty_option'] = t('- None -');
+          }
+        }
       }
     }
 
