@@ -100,7 +100,7 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
           '#type' => 'textfield',
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
-          '#required' => TRUE,
+          '#required' => !empty($contact_field['required']),
         );
       }
     }
@@ -324,7 +324,7 @@ function _civicrm_newsletter_request_form($form, &$form_state, $profile_name = '
           '#type' => 'textfield',
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
-          '#required' => TRUE,
+          '#required' => !empty($contact_field['required']),
         );
       }
     }
