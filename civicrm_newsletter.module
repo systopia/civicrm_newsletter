@@ -215,7 +215,7 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
         drupal_set_message(t('Your confirmation could not be submitted, please try again later.'), 'error');
         $form_state['rebuild'] = TRUE;
       }
-      else {
+      elseif (!empty($result['values'])) {
         drupal_set_message(t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.'));
       }
 
