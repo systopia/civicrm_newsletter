@@ -163,6 +163,30 @@ function _civicrm_newsletter_subscription_confirm($params) {
 }
 
 /**
+ * Submits an Advanced Newsletter Management subscription auto confirmation to
+ * CiviCRM
+ *
+ * @param $params
+ *   The CiviCRM API call parameters.
+ *
+ * @return array
+ *   The CiviCRM API call reply.
+ */
+function _civicrm_newsletter_subscription_autoconfirm($params) {
+  $params['autoconfirm'] = 1;
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterSubscription',
+    'confirm',
+    $params,
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+
+  return $reply;
+}
+
+/**
  * Requests an Advanced Newsletter Management subscription confirmation link to
  * be sent by CiviCRM.
  *

@@ -199,6 +199,20 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
       drupal_goto('civicrm_newsletter/request_link/' . $profile_name);
     }
     else {
+      // Automatically confirm pending subscriptions.
+      $result = _civicrm_newsletter_subscription_autoconfirm(array(
+        'contact_id' => $subscription['contact']['id'],
+        'contact_hash' => $subscription['contact']['hash'],
+      ));
+      if (!empty($result['is_error'])) {
+        // The API call returned an error, rebuild the form and notify the user.
+        drupal_set_message(t('Your confirmation could not be submitted, please try again later.'), 'error');
+        $form_state['rebuild'] = TRUE;
+      }
+      else {
+        drupal_set_message(t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.'));
+      }
+
       $form['contact_hash'] = array(
         '#type' => 'value',
         '#value' => $subscription['contact']['hash'],
