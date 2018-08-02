@@ -112,11 +112,18 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
     }
 
     // Add mailing lists selection.
-    $form['mailing_lists'] = array(
-      '#type' => 'checkboxes',
-      '#title' => $profile['mailing_lists_label'],
-      '#description' => $profile['mailing_lists_description'],
-      '#options' => $profile['mailing_lists'],
+    $form['mailing_lists'] = _civicrm_newsletter_mailing_lists_tree_checkboxes($profile['mailing_lists_tree']);
+    $form['mailing_lists']['#title'] = $profile['mailing_lists_label'];
+    $form['mailing_lists']['#description'] = $profile['mailing_lists_description'];
+    $form['mailing_lists']['#attributes'] = array(
+      'class' => array(
+        'form-item-mailing-lists',
+      ),
+    );
+    $form['mailing_lists']['#attached'] = array(
+      'js' => array(
+        drupal_get_path('module', 'civicrm_newsletter') . '/js/civicrm_newsletter.js',
+      )
     );
 
     // Add terms and conditions.
@@ -250,18 +257,21 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash
       }
 
       // Add mailing lists selection.
-      $form['mailing_lists'] = array(
-        '#type' => 'checkboxes',
-        '#title' => $profile['mailing_lists_label'],
-        '#description' => $profile['mailing_lists_description'],
-        '#options' => $profile['mailing_lists'],
-        // Check added and pending groups.
-        '#default_value' => array_keys($subscription['subscription_status']),
-        '#attached' => array(
-          'js' => array(
-            drupal_get_path('module', 'civicrm_newsletter') . '/js/civicrm_newsletter.js',
-          )
+      $form['mailing_lists'] = _civicrm_newsletter_mailing_lists_tree_checkboxes(
+        $profile['mailing_lists_tree'],
+        $subscription['subscription_status']
+      );
+      $form['mailing_lists']['#title'] = $profile['mailing_lists_label'];
+      $form['mailing_lists']['#description'] = $profile['mailing_lists_description'];
+      $form['mailing_lists']['#attributes'] = array(
+        'class' => array(
+          'form-item-mailing-lists',
         ),
+      );
+      $form['mailing_lists']['#attached'] = array(
+        'js' => array(
+          drupal_get_path('module', 'civicrm_newsletter') . '/js/civicrm_newsletter.js',
+        )
       );
 
       // Add terms and conditions.
@@ -408,4 +418,43 @@ function _civicrm_newsletter_contact_field_types() {
     'Text' => 'textfield',
     'Textarea' => 'textarea',
   );
+}
+
+/**
+ * Transforms a mailing lists tree from a retrieved profile configuration into
+ * nested fieldset elements with checkboxes.
+ *
+ * @param array $tree
+ *
+ * @param array $default_values
+ *
+ * @return array
+ */
+function _civicrm_newsletter_mailing_lists_tree_checkboxes($tree, $default_values = array()) {
+  $element = array(
+    '#type' => 'fieldset',
+  );
+
+  foreach ($tree as $group_id => $group_definition) {
+    $checkbox = array(
+      '#type' => 'checkbox',
+      '#title' => $group_definition['label'],
+      '#description' => $group_definition['description'],
+      '#default_value' => (array_key_exists($group_id, $default_values)) ? 1 : 0,
+    );
+    if (!empty($group_definition['children'])) {
+      $element[$group_id . '_fieldset'] = array(
+        '#type' => 'fieldset',
+        '#title' => $group_definition['label'],
+        '#description' => $group_definition['description'],
+      );
+      $element[$group_id . '_fieldset']['mailing_lists[' . $group_id . ']'] = $checkbox;
+      $element[$group_id . '_fieldset']['children'] = _civicrm_newsletter_mailing_lists_tree_checkboxes($group_definition['children'], $default_values);
+    }
+    else {
+      $element['mailing_lists[' . $group_id . ']'] = $checkbox;
+    }
+  }
+
+  return $element;
 }
