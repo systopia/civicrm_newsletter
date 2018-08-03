@@ -15,19 +15,19 @@ function civicrm_newsletter_menu() {
     'file' => 'civicrm_newsletter.admin.inc',
   );
 
-  $items['civicrm_newsletter/subscribe'] = array(
+  $items['civicrm_newsletter/subscribe/%'] = array(
     'title' => 'Subscribe to CiviCRM newsletters',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_subscription_form', 2),
     'access arguments' => array('access civicrm newsletter subscription form'),
   );
-  $items['civicrm_newsletter/preferences/%'] = array(
+  $items['civicrm_newsletter/preferences/%/%'] = array(
     'title' => 'CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_preferences_form', 2, 3),
     'access arguments' => array('access civicrm newsletter preferences form'),
   );
-  $items['civicrm_newsletter/request_link'] = array(
+  $items['civicrm_newsletter/request_link/%'] = array(
     'title' => 'Request a link to CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_request_form', 2),
@@ -66,19 +66,13 @@ function civicrm_newsletter_permission() {
 /**
  * Builds the public subscription form.
  */
-function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_name = 'default') {
+function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_name) {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-
-  // Default parameter may be an empty string when coming from menu router.
-  $profile_name = $profile_name ?: 'default';
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
   if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
-    drupal_set_message(
-      t('Could not retrieve the newsletter profile. Please try again later.'),
-      'error'
-    );
+    drupal_not_found();
   }
   else {
     // Set page title according to received configuration.
@@ -177,19 +171,13 @@ function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
 /**
  * Builds the preferences form for a CiviCRM contact.
  */
-function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_name = 'default') {
+function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_name) {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-
-  // Default parameter may be an empty string.
-  $profile_name = $profile_name ?: 'default';
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
   if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
-    drupal_set_message(
-      t('Could not retrieve the newsletter profile. Please try again later.'),
-      'error'
-    );
+    drupal_not_found();
   }
   else {
     // Set page title according to received configuration.
@@ -327,19 +315,13 @@ function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
 /**
  * Builds the request link form.
  */
-function _civicrm_newsletter_request_form($form, &$form_state, $profile_name = 'default')  {
+function _civicrm_newsletter_request_form($form, &$form_state, $profile_name)  {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
-
-  // Default parameter may be an empty string.
-  $profile_name = $profile_name ?: 'default';
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
   if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
-    drupal_set_message(
-      t('Could not retrieve the newsletter profile. Please try again later.'),
-      'error'
-    );
+    drupal_not_found();
   }
   else {
     // Set page title according to received configuration.
