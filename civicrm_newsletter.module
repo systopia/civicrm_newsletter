@@ -19,22 +19,64 @@ function civicrm_newsletter_menu() {
     'title' => 'Subscribe to CiviCRM newsletters',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_subscription_form', 2),
-    'access arguments' => array('access civicrm newsletter subscription form'),
+    'access callback' => '_civicrm_newsletter_access',
+    'access arguments' => array('_civicrm_newsletter_subscription_form', 2),
   );
   $items['civicrm_newsletter/preferences/%/%'] = array(
     'title' => 'CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_preferences_form', 2, 3),
-    'access arguments' => array('access civicrm newsletter preferences form'),
+    'access callback' => '_civicrm_newsletter_access',
+    'access arguments' => array('_civicrm_newsletter_preferences_form', 2),
   );
   $items['civicrm_newsletter/request_link/%'] = array(
     'title' => 'Request a link to CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('_civicrm_newsletter_request_form', 2),
-    'access arguments' => array('access civicrm newsletter request form'),
+    'access callback' => '_civicrm_newsletter_access',
+    'access arguments' => array('_civicrm_newsletter_request_form', 2),
   );
 
   return $items;
+}
+
+/**
+ * Access callback for this module's page callbacks.
+ *
+ * @param $callback
+ *   The name of the page callback as defined within hook_menu().
+ * @param $profile_name
+ *   The name of the Advanced Newsletter Management profile.
+ *
+ * @return bool
+ *   Whether the user is granted access to the page callback.
+ */
+function _civicrm_newsletter_access($callback, $profile_name) {
+  switch ($callback) {
+    case '_civicrm_newsletter_subscription_form':
+      $access = (
+        user_access('access civicrm all newsletter subscription forms')
+        || user_access('access civicrm newsletter subscription form ' . $profile_name)
+      );
+      break;
+    case '_civicrm_newsletter_preferences_form':
+      $access = (
+        user_access('access all civicrm newsletter preferences forms')
+        || user_access('access civicrm newsletter preferences form ' . $profile_name)
+      );
+      break;
+    case '_civicrm_newsletter_request_form':
+      $access = (
+        user_access('access all civicrm newsletter request forms')
+        || user_access('access civicrm newsletter request form ' . $profile_name)
+      );
+      break;
+    default:
+      $access = FALSE;
+      break;
+  }
+
+  return $access;
 }
 
 /**
@@ -47,18 +89,35 @@ function civicrm_newsletter_permission() {
     'title' => t('Administer CiviCRM Advanced Newsletter Management'),
     'description' => t('Allow users to configure the module.')
   );
-  $permissions['access civicrm newsletter subscription form'] = array(
-    'title' => t('Access newsletter subscription form'),
-    'description' => t('Allow users to access the public newsletter subscription form.'),
+  $permissions['access civicrm all newsletter subscription forms'] = array(
+    'title' => t('Access all newsletter subscription forms'),
+    'description' => t('Allow users to access the public newsletter subscription form for any profile.'),
   );
-  $permissions['access civicrm newsletter preferences form'] = array(
-    'title' => t('Access newsletter preferences form'),
-    'description' => t('Allow users to access the newsletter preferences form.'),
+  $permissions['access all civicrm newsletter preferences forms'] = array(
+    'title' => t('Access all newsletter preferences forms'),
+    'description' => t('Allow users to access the newsletter preferences form for any profile.'),
   );
-  $permissions['access civicrm newsletter request form'] = array(
-    'title' => t('Access newsletter request form'),
-    'description' => t('Allow users to access the request link form.'),
+  $permissions['access all civicrm newsletter request forms'] = array(
+    'title' => t('Access all newsletter request forms'),
+    'description' => t('Allow users to access the request link form for any profile.'),
   );
+
+  // Per-form permission per profile.
+  module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
+  foreach(_civicrm_newsletter_profile_get() as $profile_name => $profile) {
+    $permissions['access civicrm newsletter subscription form ' . $profile_name] = array(
+      'title' => t('Access newsletter subscription form with profile ' . $profile_name),
+      'description' => t('Allow users to access the public newsletter subscription form with profile ' . $profile_name . '.'),
+    );
+    $permissions['access civicrm newsletter preferences form ' . $profile_name] = array(
+      'title' => t('Access newsletter preferences form with profile ' . $profile_name),
+      'description' => t('Allow users to access the newsletter preferences form with profile ' . $profile_name . '.'),
+    );
+    $permissions['access civicrm newsletter request form ' . $profile_name] = array(
+      'title' => t('Access newsletter request form ' . $profile_name),
+      'description' => t('Allow users to access the request link form for profile ' . $profile_name . '.'),
+    );
+  }
 
   return $permissions;
 }
@@ -171,7 +230,7 @@ function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
 /**
  * Builds the preferences form for a CiviCRM contact.
  */
-function _civicrm_newsletter_preferences_form($form, &$form_state, $contact_hash, $profile_name) {
+function _civicrm_newsletter_preferences_form($form, &$form_state, $profile_name, $contact_hash) {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for

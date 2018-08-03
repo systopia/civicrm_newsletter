@@ -62,30 +62,38 @@ function _civicrm_newsletter_send_call($entity, $action, $parameters = array(), 
  * Retrieves the configuration for an Advanced Newsletter Management profile
  * from CiviCRM.
  *
- * @param string $profile_name
- *   The name of the Advanced Newsletter Management profile.
+ * @param string | NULL $profile_name
+ *   The name of the Advanced Newsletter Management profile to retrieve, or NULL
+ *   to retrieve all configured Advanced Newsletter Management profiles.
  *
  * @return array | NULL
  *   The Advanced Newsletter Management profile configuration, or NULL if the
  *   profile could not be retrieved.
  */
-function _civicrm_newsletter_profile_get($profile_name) {
+function _civicrm_newsletter_profile_get($profile_name = NULL) {
+  $params = array();
+  if ($profile_name) {
+    $params['name'] = $profile_name;
+  }
   $call = _civicrm_newsletter_send_call(
     'NewsletterProfile',
     'get',
-    array('name' => $profile_name),
+    $params,
     array(),
     _civicrm_newsletter_get_cmrf_profile()
   );
   $reply = $call->getReply();
   if ($reply['is_error'] == 1) {
-    $profile = NULL;
+    $return = NULL;
+  }
+  elseif ($profile_name) {
+    $return = reset($reply['values']);
   }
   else {
-    $profile = reset($reply['values']);
+    $return = $reply['values'];
   }
 
-  return $profile;
+  return $return;
 }
 
 /**
