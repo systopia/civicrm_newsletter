@@ -211,6 +211,13 @@ function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
   form_state_values_clean($params);
   $params = $params['values'];
 
+  // Build mailing_lists array.
+  foreach ($params as $name => $value) {
+    if (strpos($name, 'mailing_lists_') === 0) {
+      $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
+      unset($params[$name]);
+    }
+  }
   // Remove unchecked checkbox values (those that are 0).
   $params['mailing_lists'] = array_filter($params['mailing_lists']);
 
@@ -353,6 +360,13 @@ function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
   $params = $form_state;
   form_state_values_clean($params);
   $params = $params['values'];
+  // Build mailing_lists array.
+  foreach ($params as $name => $value) {
+    if (strpos($name, 'mailing_lists_') === 0) {
+      $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
+      unset($params[$name]);
+    }
+  }
   $params['mailing_lists'] = array_map(function($value) {
     return ($value ? 'Added' : 'Removed');
   }, $params['mailing_lists']);
@@ -490,12 +504,12 @@ function _civicrm_newsletter_mailing_lists_tree_checkboxes($tree, $default_value
         '#description' => $group_definition['description'],
       );
       // Checkbox for the group itself.
-      $element[$group_id . '_fieldset']['mailing_lists[' . $group_id . ']'] = $checkbox;
+      $element[$group_id . '_fieldset']['mailing_lists_' . $group_id] = $checkbox;
       // Nested fieldset with checkboxes.
       $element[$group_id . '_fieldset']['children'] = _civicrm_newsletter_mailing_lists_tree_checkboxes($group_definition['children'], $default_values);
     }
     else {
-      $element['mailing_lists[' . $group_id . ']'] = $checkbox;
+      $element['mailing_lists_' . $group_id] = $checkbox;
     }
   }
 
