@@ -219,7 +219,7 @@ function _civicrm_newsletter_subscription_form_submit($form, &$form_state) {
     }
   }
   // Remove unchecked checkbox values (those that are 0).
-  $params['mailing_lists'] = array_filter($params['mailing_lists']);
+  $params['mailing_lists'] = array_keys(array_filter($params['mailing_lists']));
 
   // Submit the subscription using CiviMRF.
   $result = _civicrm_newsletter_subscription_submit($params);
