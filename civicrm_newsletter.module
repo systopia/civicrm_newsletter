@@ -258,7 +258,7 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $profile_name
     );
 
     // Retrieve subscription status for contact.
-    if (!$subscription = civicrm_newsletter_subscription_get($contact_hash)) {
+    if (!$subscription = civicrm_newsletter_subscription_get($profile_name, $contact_hash)) {
       drupal_set_message(
         t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.'),
         'warning'
@@ -270,6 +270,7 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $profile_name
       $result = _civicrm_newsletter_subscription_autoconfirm(array(
         'contact_id' => $subscription['contact']['id'],
         'contact_hash' => $subscription['contact']['hash'],
+        'profile' => $profile_name,
       ));
       if (!empty($result['is_error'])) {
         // The API call returned an error, rebuild the form and notify the user.
