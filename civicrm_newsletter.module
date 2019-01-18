@@ -494,14 +494,17 @@ function _civicrm_newsletter_mailing_lists_tree_checkboxes($tree, $default_value
   foreach ($tree as $group_id => $group_definition) {
     $checkbox = array(
       '#type' => 'checkbox',
-      '#title' => $group_definition['label'],
+      '#title' => $group_definition['title'],
+      '#attributes' => array(
+        'data-civicrm-group-name' => $group_definition['name'],
+      ),
       '#description' => $group_definition['description'],
       '#default_value' => (array_key_exists($group_id, $default_values)) ? 1 : 0,
     );
     if (!empty($group_definition['children'])) {
       $element[$group_id . '_fieldset'] = array(
         '#type' => 'fieldset',
-        '#title' => $group_definition['label'],
+        '#title' => $group_definition['title'],
         '#description' => $group_definition['description'],
       );
       // Checkbox for the group itself.
