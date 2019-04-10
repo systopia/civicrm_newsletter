@@ -514,6 +514,8 @@ function _civicrm_newsletter_mailing_lists_tree_checkboxes($tree, $default_value
     }
     else {
       $element['mailing_lists_' . $group_id] = $checkbox;
+      // Move groups without children to the top of the fieldset.
+      $element['mailing_lists_' . $group_id]['#weight'] = -1;
     }
   }
 
