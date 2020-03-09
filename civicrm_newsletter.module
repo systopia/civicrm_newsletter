@@ -32,7 +32,7 @@ function civicrm_newsletter_menu() {
   $items['civicrm_newsletter/request_link/%'] = array(
     'title' => 'Request a link to CiviCRM newsletters preferences',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('_civicrm_newsletter_request_form', 2),
+    'page arguments' => array('_civicrm_newsletter_request_form', 2, 3),
     'access callback' => '_civicrm_newsletter_access',
     'access arguments' => array('_civicrm_newsletter_request_form', 2),
   );
@@ -389,7 +389,7 @@ function _civicrm_newsletter_preferences_form_submit($form, &$form_state) {
 /**
  * Builds the request link form.
  */
-function _civicrm_newsletter_request_form($form, &$form_state, $profile_name)  {
+function _civicrm_newsletter_request_form($form, &$form_state, $profile_name, $contact_hash = NULL)  {
   module_load_include('inc', 'civicrm_newsletter', 'civicrm_newsletter.cmrf');
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
@@ -403,36 +403,64 @@ function _civicrm_newsletter_request_form($form, &$form_state, $profile_name)  {
       drupal_set_title($profile['form_title']);
     }
 
-    // Include the Advanced Newsletter Management profile name.
-    $form['profile'] = array(
-      '#type' => 'value',
-      '#value' => $profile_name,
-    );
-
-    // Build form according to received configuration:
-    // Add contact fields.
-    foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
-      if ($contact_field['active']) {
-        $form[$contact_field_name] = array(
-          '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
-          '#title' => $contact_field['label'],
-          '#description' => $contact_field['description'],
-          '#required' => !empty($contact_field['required']),
+    // If a hash is given, submit to the request API action without showing a form.
+    if ($contact_hash) {
+      if (!$subscription = civicrm_newsletter_subscription_get($profile_name, $contact_hash)) {
+        drupal_set_message(
+          t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.'),
+          'warning'
         );
-        if (!empty($contact_field['options'])) {
-          $form[$contact_field_name]['#options'] = $contact_field['options'];
-          if (empty($contact_field['required'])) {
-            $form[$contact_field_name]['#empty_option'] = t('- None -');
+        drupal_goto('civicrm_newsletter/request_link/' . $profile_name);
+      }
+
+      $params = array(
+        'profile' => $profile_name,
+        'contact_hash' => $subscription['contact']['hash'],
+        'contact_id' => $subscription['contact']['id'],
+      );
+      $result = _civicrm_newsletter_subscription_request($params);
+
+      if (!empty($result['is_error'])) {
+        // The API call returned an error, rebuild the form and notify the user.
+        drupal_set_message(t('Your request could not be submitted, please try again later.'), 'error');
+        $form_state['rebuild'] = TRUE;
+      }
+      else {
+        drupal_set_message(t('Your request has been successfully submitted. You will receive an e-mail with a link to a confirmation page.'));
+      }
+    }
+    else {
+      // Include the Advanced Newsletter Management profile name.
+      $form['profile'] = array(
+        '#type' => 'value',
+        '#value' => $profile_name,
+      );
+
+      // Build form according to received configuration:
+      // Add contact fields.
+      foreach ($profile['contact_fields'] as $contact_field_name => $contact_field) {
+        if ($contact_field['active']) {
+          $form[$contact_field_name] = array(
+            '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
+            '#title' => $contact_field['label'],
+            '#description' => $contact_field['description'],
+            '#required' => !empty($contact_field['required']),
+          );
+          if (!empty($contact_field['options'])) {
+            $form[$contact_field_name]['#options'] = $contact_field['options'];
+            if (empty($contact_field['required'])) {
+              $form[$contact_field_name]['#empty_option'] = t('- None -');
+            }
           }
         }
       }
-    }
 
-    // Add submit button with configured label, if given.
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => t('Submit'),
-    );
+      // Add submit button with configured label, if given.
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => t('Submit'),
+      );
+    }
   }
 
   return $form;
