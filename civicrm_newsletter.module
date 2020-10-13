@@ -330,9 +330,14 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $profile_name
       );
 
       if (!empty($profile['mailing_lists_unsubscribe_all'])) {
-        $form['unsubscribe_all'] = array(
+        $form['unsubscribe'] = array(
+          '#type' => 'fieldset',
+          '#title' => $profile['mailing_lists_unsubscribe_all_label'],
+        );
+        $form['unsubscribe']['unsubscribe_all'] = array(
           '#type' => 'checkbox',
           '#title' => $profile['mailing_lists_unsubscribe_all_submit_label'],
+          '#description' => $profile['mailing_lists_unsubscribe_all_description']
         );
         $form['mailing_lists']['#states'] = array(
           'invisible' => array(
