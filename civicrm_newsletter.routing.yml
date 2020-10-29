@@ -1,0 +1,31 @@
+civicrm_newsletter.admin:
+  path: 'admin/config/services/civicrm_newsletter'
+  defaults:
+    _title: 'CiviCRM Advanced Newsletter Management'
+    _controller: '\Drupal\civicrm_newsletter\NewsletterController::configServices'
+  requirements:
+    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+
+civicrm_newsletter.subscribe:
+  path: 'civicrm_newsletter/subscribe'
+  defaults:
+    _title: 'Subscribe to CiviCRM newsletters'
+    _controller: '\Drupal\civicrm_newsletter\NewsletterController::subscribe'
+  requirements:
+    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+
+civicrm_newsletter.preferences:
+  path: 'admin/config/services/civicrm_newsletter'
+  defaults:
+    _title: 'CiviCRM newsletters preferences'
+    _controller: '\Drupal\civicrm_newsletter\NewsletterController::preferences'
+  requirements:
+    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+
+civicrm_newsletter.request_link:
+  path: 'admin/config/services/civicrm_newsletter'
+  defaults:
+    _title: 'Request a link to CiviCRM newsletters preferences'
+    _controller: '\Drupal\civicrm_newsletter\NewsletterController::requestLink'
+  requirements:
+    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
