@@ -4,7 +4,7 @@ civicrm_newsletter.admin_form:
     _title: 'CiviCRM Advanced Newsletter Management'
     _form: '\Drupal\civicrm_newsletter\AdminForm'
   requirements:
-    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+    _custom_access: '\Drupal\civicrm_newsletter\AdminForm::access'
 
 civicrm_newsletter.subscribe_form:
   path: 'civicrm_newsletter/subscribe'
@@ -12,7 +12,7 @@ civicrm_newsletter.subscribe_form:
     _title: 'Subscribe to CiviCRM newsletters'
     _form: '\Drupal\civicrm_newsletter\SubscriptionForm'
   requirements:
-    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+    _custom_access: '\Drupal\civicrm_newsletter\SubscriptionForm::access'
 
 civicrm_newsletter.preferences_form:
   path: 'admin/config/services/civicrm_newsletter'
@@ -20,7 +20,7 @@ civicrm_newsletter.preferences_form:
     _title: 'CiviCRM newsletters preferences'
     _form: '\Drupal\civicrm_newsletter\NewsletterForm'
   requirements:
-    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+    _permission: '\Drupal\civicrm_newsletter\NewsletterForm::access'
 
 civicrm_newsletter.request_link_form:
   path: 'admin/config/services/civicrm_newsletter'
@@ -28,4 +28,4 @@ civicrm_newsletter.request_link_form:
     _title: 'Request a link to CiviCRM newsletters preferences'
     _form: '\Drupal\civicrm_newsletter\RequestLinkForm'
   requirements:
-    _permission: 'access civicrm newsletter subscription forms' # TODO: Is this correct/suffucient?
+    _permission: '\Drupal\civicrm_newsletter\RequestLinkForm::access'
