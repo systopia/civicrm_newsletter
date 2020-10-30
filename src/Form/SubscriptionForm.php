@@ -2,12 +2,12 @@
 
 namespace Drupal\civicrm_newsletter\Form;
 
-use Drupal\Core\Form\FormInterface;
-# use Drupal\Core\Form\FormBase;
-# use Drupal\Core\Form\FormStateInterface;
-# FIXME: Which to use?
+use Drupal\Core\Form\FormBase;
 
-class SubscriptionForm implements FormInterface # FIXME: Or "extends FormBase" instead?
+# For Admin:
+# use Drupal\Core\Form\ConfigFormBase;
+
+class SubscriptionForm extends FormBase
 {
     public function getFormID()
     {
@@ -29,5 +29,10 @@ class SubscriptionForm implements FormInterface # FIXME: Or "extends FormBase" i
     public function submitForm(array &$form, array &$form_state)
     {
         // TODO: Implement.
+    }
+
+    public function access()
+    {
+        // TODO: Implement. return AccessResult::allowedIfHasPermissions()
     }
 }
