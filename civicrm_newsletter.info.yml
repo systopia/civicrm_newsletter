@@ -6,7 +6,7 @@ core: 8.x
 
 package: CiviCRM
 
-version: 0.x-dev
+version: 8.x-0.x-dev
 
 dependencies:
   - cmrf_core
