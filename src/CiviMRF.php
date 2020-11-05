@@ -17,6 +17,8 @@ namespace Drupal\civicrm_newsletter;
 
 use Drupal;
 use Drupal\cmrf_core\Core;
+use Drupal\Core\Utility\Error;
+use Exception;
 
 /**
  * Class CiviMRF
@@ -67,23 +69,33 @@ class CiviMRF {
     if ($profile_name) {
       $params['name'] = $profile_name;
     }
-    $call = $this->core->createCall(
-      $this->connector(),
-      'NewsletterProfile',
-      'get',
-      $params,
-      []
-    );
-    $this->core->executeCall($call);
-    $reply = $call->getReply();
-    if ($reply['is_error'] == 1) {
-      $return = NULL;
+    try {
+      $call = $this->core->createCall(
+        $this->connector(),
+        'NewsletterProfile',
+        'get',
+        $params,
+        []
+      );
+      $this->core->executeCall($call);
+      $reply = $call->getReply();
+      if ($reply['is_error'] == 1) {
+        $return = NULL;
+      }
+      elseif ($profile_name) {
+        $return = reset($reply['values']) + ['name' => $profile_name];
+      }
+      else {
+        $return = $reply['values'];
+      }
     }
-    elseif ($profile_name) {
-      $return = reset($reply['values']) + ['name' => $profile_name];
-    }
-    else {
-      $return = $reply['values'];
+    catch (Exception $exception) {
+      $variables = Error::decodeException($exception);
+      Drupal::logger('civicrm_newsletter')->error(
+        '%type: @message in %function (line %line of %file).',
+        $variables
+      );
+      $return = [];
     }
 
     return $return;
