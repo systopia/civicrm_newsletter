@@ -1,0 +1,5 @@
+administer civicrm newsletter:
+  title: 'Administer CiviCRM Advanced Newsletter Management'
+
+permission_callbacks:
+  - Drupal\civicrm_newsletter\Permissions::permissions

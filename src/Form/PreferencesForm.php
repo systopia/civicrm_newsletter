@@ -23,10 +23,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-# For Admin:
-# use Drupal\Core\Form\ConfigFormBase;
 
-class RequestLinkForm extends FormBase {
+class PreferencesForm extends FormBase {
 
   /**
    * @var CiviMRF $cmrf
@@ -63,7 +61,7 @@ class RequestLinkForm extends FormBase {
    * @inheritDoc
    */
   public function getFormID() {
-    return 'civicrm_newsletter_request_link_form';
+    return 'civicrm_newsletter_preferences_form';
   }
 
   public function buildForm(array $form, FormStateInterface $form_state) {
@@ -92,8 +90,8 @@ class RequestLinkForm extends FormBase {
     return AccessResult::allowedIfHasPermissions(
       $account,
       [
-        'access civicrm all newsletter request forms',
-        'access civicrm newsletter request form ' . $profile_name,
+        'access civicrm all newsletter preferences forms',
+        'access civicrm newsletter preferences form ' . $profile_name,
       ],
       'OR'
     );

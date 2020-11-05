@@ -1,0 +1,6 @@
+civicrm_newsletter:
+  version: 1.x
+  js:
+    js/civicrm_newsletter.js: {}
+  dependencies:
+    - core/jquery

@@ -1,38 +1,193 @@
 <?php
+/*------------------------------------------------------------+
+| CiviCRM Advanced Newsletter Management                      |
+| Copyright (C) 2020 SYSTOPIA                                 |
+| Author: J. Schuppe (schuppe@systopia.de)                    |
++-------------------------------------------------------------+
+| This program is released as free software under the         |
+| Affero GPL license. You can redistribute it and/or          |
+| modify it under the terms of this license which you         |
+| can read by viewing the included agpl.txt or online         |
+| at www.gnu.org/licenses/agpl.html. Removal of this          |
+| copyright header is strictly prohibited without             |
+| written permission from the original author(s).             |
++-------------------------------------------------------------*/
 
 namespace Drupal\civicrm_newsletter\Form;
 
+use Drupal;
+use Drupal\civicrm_newsletter\CiviMRF;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use stdClass;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-# For Admin:
-# use Drupal\Core\Form\ConfigFormBase;
 
-class SubscriptionForm extends FormBase
-{
-    public function getFormID()
-    {
-        // TODO: Implement.
+class SubscriptionForm extends FormBase {
+
+  /**
+   * @var CiviMRF $cmrf
+   *   The CiviMRF service.
+   */
+  protected $cmrf;
+
+  /**
+   * ConfigForm constructor.
+   *
+   * @param CiviMRF $cmrf
+   *   The CiviMRF service.
+   */
+  public function __construct(CiviMRF $cmrf) {
+    $this->cmrf = $cmrf;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    /**
+     * Inject dependencies.
+     *
+     * @var CiviMRF $cmrf
+     */
+    $cmrf = $container->get('civicrm_newsletter.cmrf');
+    return new static(
+      $cmrf
+    );
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function getFormID() {
+    return 'civicrm_newsletter_subscription_form';
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function buildForm(array $form, FormStateInterface $form_state, stdClass $profile = NULL) {
+    // Include the Advanced Newsletter Management profile name.
+    $form['profile'] = array(
+      '#type' => 'value',
+      '#value' => $profile->name,
+    );
+
+    // Build form according to received configuration:
+    // Add contact fields.
+    foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
+      if ($contact_field['active']) {
+        $form[$contact_field_name] = array(
+          '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
+          '#title' => $contact_field['label'],
+          '#description' => $contact_field['description'],
+          '#required' => !empty($contact_field['required']),
+        );
+        if (!empty($contact_field['options'])) {
+          $form[$contact_field_name]['#options'] = $contact_field['options'];
+          if (empty($contact_field['required'])) {
+            $form[$contact_field_name]['#empty_option'] = t('- None -');
+          }
+        }
+      }
     }
 
-    public function buildForm(array $form, array &$form_state)
-    {
-        // TODO: Implement.
+    // Add mailing lists selection.
+    $form['mailing_lists'] = _civicrm_newsletter_mailing_lists_tree_checkboxes($profile->mailing_lists_tree);
+    $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
+    $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
+    $form['mailing_lists']['#attributes'] = array(
+      'class' => array(
+        'form-item-mailing-lists',
+      ),
+    );
+    $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
 
-        return $form;
+    // Add terms and conditions.
+    if (!empty($profile->conditions_public)) {
+      $form['conditions_public'] = array(
+        '#type' => 'textarea',
+        '#title' => $profile->conditions_public_label,
+        '#description' => $profile->conditions_public_description,
+        '#value' => $profile->conditions_public,
+        '#disabled' => TRUE,
+      );
     }
 
-    public function validateForm(array &$form, array &$form_state)
-    {
-        // TODO: Implement.
-    }
+    // Add submit button with configured label, if given.
+    $form['submit'] = array(
+      '#type' => 'submit',
+      '#value' => $profile->submit_label ?: t('Submit'),
+    );
 
-    public function submitForm(array &$form, array &$form_state)
-    {
-        // TODO: Implement.
-    }
+    return $form;
+  }
 
-    public function access()
-    {
-        // TODO: Implement. return AccessResult::allowedIfHasPermissions()
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Clean the submitted values from Drupal Form API stuff.
+    $params = clone $form_state;
+    $params->cleanValues();
+    $params = $params->getValues();
+
+    // Build mailing_lists array.
+    foreach ($params as $name => $value) {
+      if (strpos($name, 'mailing_lists_') === 0) {
+        $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
+        unset($params[$name]);
+      }
     }
+    // Remove unchecked checkbox values (those that are 0).
+    $params['mailing_lists'] = array_keys(array_filter($params['mailing_lists']));
+
+    // Submit the subscription using CiviMRF.
+    $result = $this->cmrf->subscriptionSubmit($params);
+
+    if (!empty($result['is_error'])) {
+      // The API call returned an error, rebuild the form and notify the user.
+      Drupal::messenger()->addError(
+        $this->t('Your subscription could not be submitted, please try again later.')
+      );
+      $form_state->setRebuild();
+    }
+    else {
+      Drupal::messenger()->addStatus(
+        $this->t('Your subscription has been successfully submitted. You will receive an e-mail with a link to a confirmation page. Your subscription will not be active until you confirm it.')
+      );
+    }
+  }
+
+  /**
+   * Sets the form title depending on the profile.
+   *
+   * @param stdClass $profile
+   *   The CiviCRM Advanced Newsletter Management profile.
+   *
+   * @return string
+   *   The form title.
+   */
+  public function title(stdClass $profile) {
+    return $profile->form_title;
+  }
+
+  /**
+   * @param AccountInterface $account
+   *   The user account to check access for.
+   * @param stdClass $profile
+   *   The CiviCRM Advanced Newsletter Management profile.
+   *
+   * @return AccessResult | AccessResultReasonInterface
+   */
+  public function access(AccountInterface $account, stdClass $profile) {
+    return AccessResult::allowedIfHasPermissions(
+      $account,
+      [
+        'access civicrm all newsletter subscription forms',
+        'access civicrm newsletter subscription form ' . $profile->name,
+      ],
+      'OR'
+    );
+  }
 }

@@ -1,0 +1,9 @@
+services:
+  civicrm_newsletter.cmrf:
+    class: Drupal\civicrm_newsletter\CiviMRF
+    arguments: ['@cmrf_core.core']
+  civicrm_newsletter.event_converter:
+    class: Drupal\civicrm_newsletter\Routing\ProfileConverter
+    arguments: [ '@civicrm_newsletter.cmrf' ]
+    tags:
+      - { name: paramconverter }
