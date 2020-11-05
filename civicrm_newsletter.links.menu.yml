@@ -1,0 +1,5 @@
+civicrm_newsletter.config_form:
+  title: 'CiviCRM Advanced Newsletter Management'
+  description: 'Configure settings for CiviCRM Advanced Newsletter Management.'
+  route_name: civicrm_newsletter.config_form
+  parent: 'system.admin_config_services'
