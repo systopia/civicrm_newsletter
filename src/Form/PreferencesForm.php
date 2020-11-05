@@ -15,12 +15,15 @@
 
 namespace Drupal\civicrm_newsletter\Form;
 
+use Drupal;
 use Drupal\civicrm_newsletter\CiviMRF;
+use Drupal\civicrm_newsletter\Utils;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
+use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -64,34 +67,196 @@ class PreferencesForm extends FormBase {
     return 'civicrm_newsletter_preferences_form';
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state) {
-    // TODO: Implement.
+  /**
+   * @inheritDoc
+   */
+  public function buildForm(
+    array $form,
+    FormStateInterface $form_state,
+    stdClass $profile = NULL,
+    $contact_hash = NULL
+  ) {
+    // Include the Advanced Newsletter Management profile name.
+    $form['profile'] = array(
+      '#type' => 'value',
+      '#value' => $profile->name,
+    );
+
+    // Retrieve subscription status for contact.
+    if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_hash)) {
+      Drupal::messenger()->addWarning(
+        $this->t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.')
+      );
+      return $this->redirect(
+        'civicrm_newsletter.request_link_form',
+        ['profile' => $profile->name]
+      );
+    }
+    else {
+      // Automatically confirm pending subscriptions.
+      $result = $this->cmrf->subscriptionAutoconfirm(array(
+        'contact_id' => $subscription['contact']['id'],
+        'contact_hash' => $subscription['contact']['hash'],
+        'profile' => $profile->name,
+      ));
+      if (!empty($result['is_error'])) {
+        // The API call returned an error, rebuild the form and notify the user.
+        Drupal::messenger()->addError(
+          $this->t('Your confirmation could not be submitted, please try again later.')
+        );
+        $form_state->setRebuild();
+      }
+      elseif (!empty($result['values'])) {
+        Drupal::messenger()->addStatus(
+          $this->t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
+        );
+      }
+
+      $form['contact_hash'] = array(
+        '#type' => 'value',
+        '#value' => $subscription['contact']['hash'],
+      );
+      $form['contact_id'] = array(
+        '#type' => 'value',
+        '#value' => $subscription['contact']['id'],
+      );
+
+      // Build form according to retrieved configuration:
+      // Add contact fields.
+      foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
+        if ($contact_field['active']) {
+          $form[$contact_field_name] = array(
+            '#type' => Utils::contactFieldTypes()[$contact_field['type']],
+            '#title' => $contact_field['label'],
+            '#description' => $contact_field['description'],
+            '#default_value' => $subscription['contact'][$contact_field_name],
+            '#required' => !empty($contact_field['required']),
+            '#disabled' => TRUE,
+          );
+          if (!empty($contact_field['options'])) {
+            $form[$contact_field_name]['#options'] = $contact_field['options'];
+            if (empty($contact_field['required'])) {
+              $form[$contact_field_name]['#empty_option'] = t('- None -');
+            }
+          }
+        }
+      }
+
+      // Add mailing lists selection.
+      $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes(
+        $profile->mailing_lists_tree,
+        $subscription['subscription_status']
+      );
+      $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
+      $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
+      $form['mailing_lists']['#attributes'] = array(
+        'class' => array(
+          'form-item-mailing-lists',
+        ),
+      );
+      $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
+
+      if (!empty($profile->mailing_lists_unsubscribe_all)) {
+        $form['unsubscribe'] = array(
+          '#type' => 'fieldset',
+          '#title' => $profile->mailing_lists_unsubscribe_all_label,
+        );
+        $form['unsubscribe']['unsubscribe_all'] = array(
+          '#type' => 'checkbox',
+          '#title' => $profile->mailing_lists_unsubscribe_all_submit_label,
+          '#description' => $profile->mailing_lists_unsubscribe_all_description
+        );
+        $form['mailing_lists']['#states'] = array(
+          'invisible' => array(
+            ':input[name="unsubscribe_all"]' => array(
+              'checked' => TRUE,
+            ),
+          ),
+        );
+      }
+
+      // Add terms and conditions.
+      if (!empty($profile->conditions_preferences)) {
+        $form['conditions_preferences'] = array(
+          '#type' => 'textarea',
+          '#title' => $profile->conditions_preferences_label,
+          '#description' => $profile->conditions_preferences_description,
+          '#value' => $profile->conditions_preferences,
+          '#disabled' => TRUE,
+        );
+      }
+
+      // Add submit button with configured label, if given.
+      $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => $profile->submit_label ?: t('Submit'),
+      );
+    }
 
     return $form;
   }
 
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    // TODO: Implement.
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    // Clean the submitted values from Drupal Form API stuff.
+    $params = clone $form_state;
+    $params->cleanValues();
+    $params = $params->getValues();
+
+    // Build mailing_lists array.
+    foreach ($params as $name => $value) {
+      if (strpos($name, 'mailing_lists_') === 0) {
+        $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
+        unset($params[$name]);
+      }
+    }
+    $params['mailing_lists'] = array_map(function($value) {
+      return ($value ? 'Added' : 'Removed');
+    }, $params['mailing_lists']);
+
+    // Submit the subscription using CiviMRF.
+    $result = $this->cmrf->subscriptionConfirm($params);
+
+    if (!empty($result['is_error'])) {
+      // The API call returned an error, rebuild the form and notify the user.
+      Drupal::messenger()->addError(
+        $this->t('Your confirmation could not be submitted, please try again later.')
+      );
+      $form_state->setRebuild();
+    }
+    else {
+      Drupal::messenger()->addStatus(
+        $this->t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
+      );
+    }
   }
 
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    // TODO: Implement.
+  /**
+   * Sets the form title depending on the profile.
+   *
+   * @param stdClass $profile
+   *   The CiviCRM Advanced Newsletter Management profile.
+   *
+   * @return string
+   *   The form title.
+   */
+  public function title(stdClass $profile) {
+    return $profile->form_title;
   }
 
   /**
    * @param AccountInterface $account
    *   The user account to check access for.
-   * @param string $profile_name
-   *   The profile name.
+   * @param stdClass $profile
+   *   The CiviCRM Advanced Newsletter Management profile.
    *
    * @return AccessResult | AccessResultReasonInterface
    */
-  public function access(AccountInterface $account, $profile_name) {
+  public function access(AccountInterface $account, stdClass $profile) {
     return AccessResult::allowedIfHasPermissions(
       $account,
       [
         'access civicrm all newsletter preferences forms',
-        'access civicrm newsletter preferences form ' . $profile_name,
+        'access civicrm newsletter preferences form ' . $profile->name,
       ],
       'OR'
     );

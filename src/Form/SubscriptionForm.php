@@ -17,6 +17,7 @@ namespace Drupal\civicrm_newsletter\Form;
 
 use Drupal;
 use Drupal\civicrm_newsletter\CiviMRF;
+use Drupal\civicrm_newsletter\Utils;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Form\FormBase;
@@ -81,7 +82,7 @@ class SubscriptionForm extends FormBase {
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if ($contact_field['active']) {
         $form[$contact_field_name] = array(
-          '#type' => _civicrm_newsletter_contact_field_types()[$contact_field['type']],
+          '#type' => Utils::contactFieldTypes()[$contact_field['type']],
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#required' => !empty($contact_field['required']),
@@ -96,7 +97,7 @@ class SubscriptionForm extends FormBase {
     }
 
     // Add mailing lists selection.
-    $form['mailing_lists'] = _civicrm_newsletter_mailing_lists_tree_checkboxes($profile->mailing_lists_tree);
+    $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes($profile->mailing_lists_tree);
     $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
     $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
     $form['mailing_lists']['#attributes'] = array(
