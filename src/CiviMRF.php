@@ -64,11 +64,52 @@ class CiviMRF {
    *   The Advanced Newsletter Management profile configuration, or NULL if the
    *   profile could not be retrieved.
    */
-  public function profileGet($profile_name = NULL) {
+  public function profileGetSingle($profile_name = NULL) {
     $params = array();
     if ($profile_name) {
       $params['name'] = $profile_name;
     }
+    try {
+      $call = $this->core->createCall(
+        $this->connector(),
+        'NewsletterProfile',
+        'getsingle',
+        $params,
+        []
+      );
+      $this->core->executeCall($call);
+      $reply = $call->getReply();
+      if ($reply['is_error'] == 1) {
+        $return = NULL;
+      }
+      elseif ($profile_name) {
+        $return = reset($reply['values']) + ['name' => $profile_name];
+      }
+      else {
+        $return = $reply['values'];
+      }
+    }
+    catch (Exception $exception) {
+      $variables = Error::decodeException($exception);
+      Drupal::logger('civicrm_newsletter')->error(
+        '%type: @message in %function (line %line of %file).',
+        $variables
+      );
+      $return = [];
+    }
+
+    return $return;
+  }
+
+  /**
+   * Retrieves the configuration for all Advanced Newsletter Management profiles
+   * from CiviCRM.
+   *
+   * @return array
+   *   An array of Advanced Newsletter Management profile configurations.
+   */
+  public function profileGet() {
+    $params = array();
     try {
       $call = $this->core->createCall(
         $this->connector(),
@@ -80,10 +121,7 @@ class CiviMRF {
       $this->core->executeCall($call);
       $reply = $call->getReply();
       if ($reply['is_error'] == 1) {
-        $return = NULL;
-      }
-      elseif ($profile_name) {
-        $return = reset($reply['values']) + ['name' => $profile_name];
+        $return = [];
       }
       else {
         $return = $reply['values'];
