@@ -55,7 +55,7 @@ function _civicrm_newsletter_access($callback, $profile_name) {
   switch ($callback) {
     case '_civicrm_newsletter_subscription_form':
       $access = (
-        user_access('access civicrm all newsletter subscription forms')
+        user_access('access all civicrm newsletter subscription forms')
         || user_access('access civicrm newsletter subscription form ' . $profile_name)
       );
       break;
@@ -89,7 +89,7 @@ function civicrm_newsletter_permission() {
     'title' => t('Administer CiviCRM Advanced Newsletter Management'),
     'description' => t('Allow users to configure the module.')
   );
-  $permissions['access civicrm all newsletter subscription forms'] = array(
+  $permissions['access all civicrm newsletter subscription forms'] = array(
     'title' => t('Access all newsletter subscription forms'),
     'description' => t('Allow users to access the public newsletter subscription form for any profile.'),
   );
