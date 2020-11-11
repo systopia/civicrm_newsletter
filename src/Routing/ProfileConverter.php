@@ -46,7 +46,7 @@ class ProfileConverter implements ParamConverterInterface {
    */
   public function convert($value, $definition, $name, array $defaults) {
     try {
-      return (object) $this->cmrf->profileGet($value);
+      return (object) $this->cmrf->profileGetSingle($value);
     } catch (Exception $exception) {
       throw new NotFoundHttpException();
     }
