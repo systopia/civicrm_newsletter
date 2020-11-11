@@ -70,14 +70,14 @@ function _civicrm_newsletter_send_call($entity, $action, $parameters = array(), 
  *   The Advanced Newsletter Management profile configuration, or NULL if the
  *   profile could not be retrieved.
  */
-function _civicrm_newsletter_profile_get($profile_name = NULL) {
+function _civicrm_newsletter_profile_getsingle($profile_name = NULL) {
   $params = array();
   if ($profile_name) {
     $params['name'] = $profile_name;
   }
   $call = _civicrm_newsletter_send_call(
     'NewsletterProfile',
-    'get',
+    'getsingle',
     $params,
     array(),
     _civicrm_newsletter_get_cmrf_profile()
@@ -88,6 +88,33 @@ function _civicrm_newsletter_profile_get($profile_name = NULL) {
   }
   elseif ($profile_name) {
     $return = reset($reply['values']);
+  }
+  else {
+    $return = $reply['values'];
+  }
+
+  return $return;
+}
+
+/**
+ * Retrieves the configuration for all Advanced Newsletter Management profiles
+ * from CiviCRM.
+ *
+ * @return array
+ *   An array of Advanced Newsletter Management profile configurations.
+ */
+function _civicrm_newsletter_profile_get() {
+  $params = array();
+  $call = _civicrm_newsletter_send_call(
+    'NewsletterProfile',
+    'get',
+    $params,
+    array(),
+    _civicrm_newsletter_get_cmrf_profile()
+  );
+  $reply = $call->getReply();
+  if ($reply['is_error'] == 1) {
+    $return = NULL;
   }
   else {
     $return = $reply['values'];
