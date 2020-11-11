@@ -130,7 +130,7 @@ function _civicrm_newsletter_subscription_form($form, &$form_state, $profile_nam
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
-  if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
+  if (!$profile = _civicrm_newsletter_profile_getsingle($profile_name)) {
     drupal_not_found();
   }
   else {
@@ -242,7 +242,7 @@ function _civicrm_newsletter_preferences_form($form, &$form_state, $profile_name
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
-  if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
+  if (!$profile = _civicrm_newsletter_profile_getsingle($profile_name)) {
     drupal_not_found();
   }
   else {
@@ -412,7 +412,7 @@ function _civicrm_newsletter_request_form($form, &$form_state, $profile_name, $c
 
   // Retrieve CiviCRM Advanced Newsletter Management extension configuration for
   // given profile.
-  if (!$profile = _civicrm_newsletter_profile_get($profile_name)) {
+  if (!$profile = _civicrm_newsletter_profile_getsingle($profile_name)) {
     drupal_not_found();
   }
   else {
