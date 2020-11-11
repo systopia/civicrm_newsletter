@@ -185,7 +185,7 @@ class SubscriptionForm extends FormBase {
     return AccessResult::allowedIfHasPermissions(
       $account,
       [
-        'access civicrm all newsletter subscription forms',
+        'access all civicrm newsletter subscription forms',
         'access civicrm newsletter subscription form ' . $profile->name,
       ],
       'OR'
