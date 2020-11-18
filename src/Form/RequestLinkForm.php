@@ -178,7 +178,7 @@ class RequestLinkForm extends FormBase {
     return AccessResult::allowedIfHasPermissions(
       $account,
       [
-        'access civicrm all newsletter request forms',
+        'access all civicrm newsletter request forms',
         'access civicrm newsletter request form ' . $profile->name,
       ],
       'OR'
