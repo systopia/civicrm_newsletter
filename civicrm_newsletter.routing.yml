@@ -31,6 +31,7 @@ civicrm_newsletter.preferences_form:
         type: civicrm_newsletter_profile
       contact_hash:
         type: string
+    no_cache: TRUE
 
 civicrm_newsletter.request_link_form:
   path: '/civicrm_newsletter/request_link/{profile}/{contact_hash}'
