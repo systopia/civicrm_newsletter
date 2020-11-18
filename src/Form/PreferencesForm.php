@@ -76,6 +76,9 @@ class PreferencesForm extends FormBase {
     stdClass $profile = NULL,
     $contact_hash = NULL
   ) {
+    // Disable caching to always retrieve the current subscription status.
+    \Drupal::service('page_cache_kill_switch')->trigger();
+
     // Include the Advanced Newsletter Management profile name.
     $form['profile'] = array(
       '#type' => 'value',
