@@ -127,6 +127,27 @@ class SubscriptionForm extends FormBase {
     return $form;
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+
+    // Make sure at least one mailing list is selected.
+    // Build mailing_lists array.
+    $mailing_lists = [];
+    foreach ($form_state->getValues() as $name => $value) {
+      if (strpos($name, 'mailing_lists_') === 0) {
+        $mailing_lists[explode('mailing_lists_', $name)[1]] = $value;
+      }
+    }
+    // Remove unchecked checkbox values (those that are 0).
+    $mailing_lists = array_keys(array_filter($mailing_lists));
+    if (empty($mailing_lists)) {
+      $form_state->setError(
+        $form['mailing_lists'],
+        $this->t('Please select at least one mailing list to subscribe to.')
+      );
+    }
+  }
+
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Clean the submitted values from Drupal Form API stuff.
     $params = clone $form_state;
