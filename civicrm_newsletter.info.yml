@@ -8,4 +8,4 @@ configure: civicrm_newsletter.config_form
 dependencies:
   - cmrf_core
 
-version: 1.x-dev
+version: 1.0-alpha9
