@@ -1,0 +1,7 @@
+langcode: de
+status: true
+dependencies: {  }
+id: civicrm_newsletter
+label: CiviCRM Advanced Newsletter Management
+type: civicrm_newsletter
+profile: default
