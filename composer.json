@@ -1,0 +1,16 @@
+{
+    "name": "custom/civicrm_newsletter",
+    "description": "In combination with the \"Advanced Newsletter Management\" extension, provides better Newsletter subscription and opt-in forms for CiviCRM contacts.",
+    "type": "drupal-custom-module",
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "SYSTOPIA",
+            "email": "info@systopia.de"
+        }
+    ],
+    "homepage": "https://github.com/systopia/civicrm_newsletter",
+    "require": {
+        "drupal/cmrf_core": "^1.0"
+    }
+}
