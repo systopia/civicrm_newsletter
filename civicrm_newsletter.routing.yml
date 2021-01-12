@@ -9,7 +9,7 @@ civicrm_newsletter.config_form:
 civicrm_newsletter.subscription_form:
   path: '/civicrm_newsletter/subscribe/{profile}'
   defaults:
-    _title: 'Subscribe to CiviCRM newsletters'
+    _title_callback: '\Drupal\civicrm_newsletter\Form\SubscriptionForm::title'
     _form: '\Drupal\civicrm_newsletter\Form\SubscriptionForm'
   requirements:
     _custom_access: '\Drupal\civicrm_newsletter\Form\SubscriptionForm::access'
@@ -21,7 +21,7 @@ civicrm_newsletter.subscription_form:
 civicrm_newsletter.preferences_form:
   path: '/civicrm_newsletter/preferences/{profile}/{contact_hash}'
   defaults:
-    _title: 'CiviCRM newsletters preferences'
+    _title_callback: '\Drupal\civicrm_newsletter\Form\PreferencesForm::title'
     _form: '\Drupal\civicrm_newsletter\Form\PreferencesForm'
   requirements:
     _custom_access: '\Drupal\civicrm_newsletter\Form\PreferencesForm::access'
@@ -36,7 +36,7 @@ civicrm_newsletter.preferences_form:
 civicrm_newsletter.request_link_form:
   path: '/civicrm_newsletter/request_link/{profile}/{contact_hash}'
   defaults:
-    _title: 'Request a link to CiviCRM newsletters preferences'
+    _title_callback: '\Drupal\civicrm_newsletter\Form\RequestLinkForm::title'
     _form: '\Drupal\civicrm_newsletter\Form\RequestLinkForm'
     contact_hash: null
   requirements:

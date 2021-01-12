@@ -167,6 +167,19 @@ class RequestLinkForm extends FormBase {
   }
 
   /**
+   * Sets the form title depending on the profile.
+   *
+   * @param stdClass $profile
+   *   The CiviCRM Advanced Newsletter Management profile.
+   *
+   * @return string
+   *   The form title.
+   */
+  public function title(stdClass $profile) {
+    return 'Request a link to CiviCRM newsletters preferences';
+  }
+
+  /**
    * @param AccountInterface $account
    *   The user account to check access for.
    * @param stdClass $profile
