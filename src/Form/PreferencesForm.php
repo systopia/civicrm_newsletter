@@ -197,6 +197,8 @@ class PreferencesForm extends FormBase {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $config = Drupal::config('civicrm_newsletter.settings');
+
     // Clean the submitted values from Drupal Form API stuff.
     $params = clone $form_state;
     $params->cleanValues();
@@ -227,6 +229,18 @@ class PreferencesForm extends FormBase {
       Drupal::messenger()->addStatus(
         $this->t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
       );
+
+      // Redirect to target from configuration.
+      if (!empty($redirect_path = $config->get('redirect_paths.preferences_form'))) {
+        /* @var Url $url */
+        $url = Drupal::service('path.validator')
+          ->getUrlIfValid($redirect_path);
+        $form_state->setRedirect(
+          $url->getRouteName(),
+          $url->getRouteParameters(),
+          $url->getOptions()
+        );
+      }
     }
   }
 
