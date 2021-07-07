@@ -19,16 +19,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CiviCRM Advanced Newsletter Management VERSION\n"
-"POT-Creation-Date: 2021-07-07 11:31+0200\n"
-"PO-Revision-Date: 2021-07-07 12:23+0200\n"
+"POT-Creation-Date: 2021-07-07 12:46+0200\n"
+"PO-Revision-Date: 2021-07-07 12:48+0200\n"
+"Last-Translator: \n"
 "Language-Team: EMAIL@ADDRESS\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"Last-Translator: \n"
-"Language: de_DE\n"
 
 #: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
 #: modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml:0
@@ -91,9 +91,21 @@ msgstr ""
 "Profile zuzugreifen."
 
 #: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:79
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:81
 msgid "CiviMRF Connector"
 msgstr "CiviMRF-Konnektor"
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+msgid "Redirect path for the subscription form"
+msgstr "Umleitungs-Pfad für das Abonnement-Formular"
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+msgid "Redirect path for the preferences form"
+msgstr "Umleitungs-Pfad für das Einstellungs-Formular"
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+msgid "Redirect path for the request-link form"
+msgstr "Umleitungs-Pfad für das Link-Anforderungs-Formular"
 
 #: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
 msgid "Deselect all"
@@ -143,19 +155,31 @@ msgstr ""
 "Benutzern erlauben, auf das Newsletter-Link-Anforderungs-Formular für Profil "
 "%profile_name zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:80
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:82
 msgid ""
 "The CiviMRF connector to use for connecting to CiviCRM. @cmrf_connectors_link"
 msgstr ""
 "Der CiviMRF-Konnektor, der für die Verbindung zu CiviCRM verwendet werden "
 "soll. @cmrf_connectors_link"
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:83
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:85
 msgid "Configure CiviMRF Connectors"
 msgstr "CiviMRF-Konnektoren konfigurieren"
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:88
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:82
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:99
+msgid "Redirect paths"
+msgstr "Umleitungspfade"
+
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:100
+msgid ""
+"You may define paths to redirect to after successful submissions of the "
+"respective forms."
+msgstr ""
+"Sie können Pfade definieren, zu denen nach erfolgreichen Einsendungen der "
+"einzelnen Formulare umgeleitet werden soll."
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:89
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:83
 msgid ""
 "Could not retrieve the newsletter subscription status. Please request a new "
 "confirmation link."
@@ -163,13 +187,13 @@ msgstr ""
 "Newsletter-Abonnement-Status konnte nicht abgerufen werden. Bitte fordern "
 "Sie einen neuen Bestätigungs-Link an."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:105;222
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:106;225
 msgid "Your confirmation could not be submitted, please try again later."
 msgstr ""
 "Die Bestätigung konnte nicht übertragen werden, bitte später erneut "
 "versuchen."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:111;228
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:112;231
 msgid ""
 "Your confirmation has been successfully submitted. You will receive an e-"
 "mail with a summary of your subscriptions."
@@ -177,25 +201,25 @@ msgstr ""
 "Ihre Bestätigung wurde erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
 "einer Zusammenfassung Ihrer Abonnements."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:139
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:130
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:93
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:140
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:131
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:94
 msgid "- None -"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:192
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:139
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:124
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:193
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:140
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:125
 msgid "Submit"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:100;158
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:101;161
 msgid "Your request could not be submitted, please try again later."
 msgstr ""
 "Ihre Anfrage konnte nicht übermittelt werden, bitte versuchen Sie es später "
 "erneut."
 
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:106;164
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:107;167
 msgid ""
 "Your request has been successfully submitted. You will receive an e-mail "
 "with a link to a confirmation page."
@@ -203,18 +227,18 @@ msgstr ""
 "Ihre Anfrage wurder erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
 "einem Link zu einer Bestätigungsseite."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:146
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:147
 msgid "Please select at least one mailing list to subscribe to."
 msgstr ""
 "Bitte mindestens einen Newsletter auswählen, den Sie abonnieren möchten."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:173
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:176
 msgid "Your subscription could not be submitted, please try again later."
 msgstr ""
 "Ihr Abonnement konnte nicht übermittelt werden, bitte versuchen Sie es "
 "später erneut."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:179
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:182
 msgid ""
 "Your subscription has been successfully submitted. You will receive an e-"
 "mail with a link to a confirmation page. Your subscription will not be "
