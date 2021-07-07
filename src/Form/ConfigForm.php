@@ -19,6 +19,7 @@ use Drupal;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element\PathElement;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\cmrf_core;
@@ -90,6 +91,8 @@ class ConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $settings_definition = Drupal::service('config.typed')
+      ->getDefinition(static::SETTINGS);
     $form['redirect_paths'] = [
       '#tree' => TRUE,
       '#type' => 'details',
@@ -97,29 +100,16 @@ class ConfigForm extends ConfigFormBase {
       '#description' => $this->t('You may define paths to redirect to after successful submissions of the respective forms.'),
       '#open' => !empty($config->get('redirect_paths')),
     ];
-    $form['redirect_paths']['subscription_form'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Subscription form'),
-      '#default_value' => $config->get('redirect_paths.subscription_form'),
-    ];
-    $form['redirect_paths']['preferences_form'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Preferences form'),
-      '#default_value' => $config->get('redirect_paths.preferences_form'),
-    ];
-    $form['redirect_paths']['request_link_form'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Request link form'),
-      '#default_value' => $config->get('redirect_paths.request_link_form'),
-    ];
+    foreach ($settings_definition['mapping']['redirect_paths']['mapping'] as $redirect_path => $definition) {
+      $form['redirect_paths'][$redirect_path] = [
+        '#type' => 'path',
+        '#title' => $definition['label'],
+        '#default_value' => $config->get('redirect_paths.' . $redirect_path),
+        '#convert_path' => PathElement::CONVERT_NONE,
+      ];
+    }
 
     return $form;
-  }
-
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
-
-    // TODO: Validate redirect paths.
   }
 
   /**
