@@ -8,4 +8,7 @@ configure: civicrm_newsletter.config_form
 dependencies:
   - cmrf_core
 
+'interface translation project': civicrm_newsletter
+'interface translation server pattern': https://systopia.github.io/civicrm_newsletter/translations/%language.po
+
 version: 1.x-dev
