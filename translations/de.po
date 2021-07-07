@@ -1,0 +1,225 @@
+# $Id$
+#
+# LANGUAGE translation of CiviCRM Advanced Newsletter Management
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml: n/a
+#  modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml: n/a
+#  modules/custom/civicrm_newsletter/civicrm_newsletter.routing.yml: n/a
+#  modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml: n/a
+#  modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml: n/a
+#  modules/custom/civicrm_newsletter/src/Form/ConfigForm.php: n/a
+#  modules/custom/civicrm_newsletter/js/civicrm_newsletter.js: n/a
+#  modules/custom/civicrm_newsletter/src/CiviMRF.php: n/a
+#  modules/custom/civicrm_newsletter/src/Permissions.php: n/a
+#  modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php: n/a
+#  modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php: n/a
+#  modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php: n/a
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CiviCRM Advanced Newsletter Management VERSION\n"
+"POT-Creation-Date: 2021-07-07 11:31+0200\n"
+"PO-Revision-Date: 2021-07-07 12:23+0200\n"
+"Language-Team: EMAIL@ADDRESS\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: \n"
+"Language: de_DE\n"
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml:0
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.routing.yml:0
+msgid "CiviCRM Advanced Newsletter Management"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
+msgid ""
+"In combination with the \"Advanced Newsletter Management\" extension, "
+"provides better Newsletter subscription and opt-in forms for CiviCRM "
+"contacts."
+msgstr ""
+"Stellt in Verbindung mit der CiviCRM-Erweiterung \"Advanced Newsletter "
+"Management\" bessere Newsletter-Abonnement- und -Bestätigungs-Formulare für "
+"CiviCRM-Kontakte zur Verfügung."
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
+msgid "CiviCRM"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml:0
+msgid "Configure settings for CiviCRM Advanced Newsletter Management."
+msgstr "Einstellung für CiviCRM Advanced Newsletter Management konfigurieren."
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Administer CiviCRM Advanced Newsletter Management"
+msgstr "CiviCRM Advanced Newsletter Management verwalten"
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Access all newsletter subscription forms"
+msgstr "Auf alle Newsletter-Abonnement-Formulare zugreifen"
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid ""
+"Allow users to access the public newsletter subscription form for any "
+"profile."
+msgstr ""
+"Benutzern erlauben, auf das öffentliche Newsletter-Abonnement-Formular für "
+"alle Profile zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Access all newsletter preferences forms"
+msgstr "Auf alle Newsletter-Einstellungs-Formulare zugreifen"
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Allow users to access the newsletter preferences form for any profile."
+msgstr ""
+"Benutzern erlauben, auf das Newsletter-Einstellungs-Formular für alle "
+"Profile zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Access all newsletter request forms"
+msgstr "Auf alle Newsletter-Link-Anforderungs-Formulare zugreifen"
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Allow users to access the request link form for any profile."
+msgstr ""
+"Benutzern erlauben, auf das Newsletter-Link-Anforderungs-Formular für alle "
+"Profile zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:79
+msgid "CiviMRF Connector"
+msgstr "CiviMRF-Konnektor"
+
+#: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
+msgid "Deselect all"
+msgstr "Alle abwählen"
+
+#: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
+msgid "Select all"
+msgstr "Alle auswählen"
+
+#: modules/custom/civicrm_newsletter/src/CiviMRF.php:94;132
+msgid "%type: @message in %function (line %line of %file)."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:71
+msgid "Access newsletter subscription form with profile %profile_name"
+msgstr "Auf Newsletter-Abonnement-Formulare mit Profil %profile_name zugreifen"
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:75
+msgid ""
+"Allow users to access the public newsletter subscription form with profile "
+"%profile_name."
+msgstr ""
+"Benutzern erlauben, auf das öffentliche Newsletter-Abonnement-Formular für "
+"das Profil %profile_name zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:81
+msgid "Access newsletter preferences form with profile %profile_name"
+msgstr ""
+"Auf Newsletter-Einstellungs-Formulare mit Profil %profile_name zugreifen"
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:85
+msgid ""
+"Allow users to access the newsletter preferences form with profile "
+"%profile_name."
+msgstr ""
+"Benutzern erlauben, auf das Newsletter-Einstellungs-Formular für das Profil "
+"%profile_name zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:91
+msgid "Access newsletter request form with profile %profile_name"
+msgstr ""
+"Auf Newsletter-Link-Anforderungs-Formulare mit Profil %profile_name zugreifen"
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:95
+msgid "Allow users to access the request link form for profile %profile_name."
+msgstr ""
+"Benutzern erlauben, auf das Newsletter-Link-Anforderungs-Formular für Profil "
+"%profile_name zuzugreifen."
+
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:80
+msgid ""
+"The CiviMRF connector to use for connecting to CiviCRM. @cmrf_connectors_link"
+msgstr ""
+"Der CiviMRF-Konnektor, der für die Verbindung zu CiviCRM verwendet werden "
+"soll. @cmrf_connectors_link"
+
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:83
+msgid "Configure CiviMRF Connectors"
+msgstr "CiviMRF-Konnektoren konfigurieren"
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:88
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:82
+msgid ""
+"Could not retrieve the newsletter subscription status. Please request a new "
+"confirmation link."
+msgstr ""
+"Newsletter-Abonnement-Status konnte nicht abgerufen werden. Bitte fordern "
+"Sie einen neuen Bestätigungs-Link an."
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:105;222
+msgid "Your confirmation could not be submitted, please try again later."
+msgstr ""
+"Die Bestätigung konnte nicht übertragen werden, bitte später erneut "
+"versuchen."
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:111;228
+msgid ""
+"Your confirmation has been successfully submitted. You will receive an e-"
+"mail with a summary of your subscriptions."
+msgstr ""
+"Ihre Bestätigung wurde erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
+"einer Zusammenfassung Ihrer Abonnements."
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:139
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:130
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:93
+msgid "- None -"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:192
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:139
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:124
+msgid "Submit"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:100;158
+msgid "Your request could not be submitted, please try again later."
+msgstr ""
+"Ihre Anfrage konnte nicht übermittelt werden, bitte versuchen Sie es später "
+"erneut."
+
+#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:106;164
+msgid ""
+"Your request has been successfully submitted. You will receive an e-mail "
+"with a link to a confirmation page."
+msgstr ""
+"Ihre Anfrage wurder erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
+"einem Link zu einer Bestätigungsseite."
+
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:146
+msgid "Please select at least one mailing list to subscribe to."
+msgstr ""
+"Bitte mindestens einen Newsletter auswählen, den Sie abonnieren möchten."
+
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:173
+msgid "Your subscription could not be submitted, please try again later."
+msgstr ""
+"Ihr Abonnement konnte nicht übermittelt werden, bitte versuchen Sie es "
+"später erneut."
+
+#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:179
+msgid ""
+"Your subscription has been successfully submitted. You will receive an e-"
+"mail with a link to a confirmation page. Your subscription will not be "
+"active until you confirm it."
+msgstr ""
+"Ihr Abonnement wurde erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
+"einem Link zu einer Bestätigungsseite. Ihr Abonnement wird erst nach Ihrer "
+"Bestätigung aktiv."
