@@ -15,9 +15,11 @@
 
 namespace Drupal\civicrm_newsletter\Form;
 
+use Drupal;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element\PathElement;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\cmrf_core;
@@ -89,6 +91,24 @@ class ConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $settings_definition = Drupal::service('config.typed')
+      ->getDefinition(static::SETTINGS);
+    $form['redirect_paths'] = [
+      '#tree' => TRUE,
+      '#type' => 'details',
+      '#title' => $this->t('Redirect paths'),
+      '#description' => $this->t('You may define paths to redirect to after successful submissions of the respective forms.'),
+      '#open' => !empty($config->get('redirect_paths')),
+    ];
+    foreach ($settings_definition['mapping']['redirect_paths']['mapping'] as $redirect_path => $definition) {
+      $form['redirect_paths'][$redirect_path] = [
+        '#type' => 'path',
+        '#title' => $definition['label'],
+        '#default_value' => $config->get('redirect_paths.' . $redirect_path),
+        '#convert_path' => PathElement::CONVERT_NONE,
+      ];
+    }
+
     return $form;
   }
 
@@ -96,9 +116,22 @@ class ConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->configFactory->getEditable(static::SETTINGS)
-      ->set('cmrf_connector', $form_state->getValue('cmrf_connector'))
-      ->save();
+    $settings_definition = Drupal::service('config.typed')
+      ->getDefinition(static::SETTINGS);
+    $configFactory = $this->configFactory()->getEditable(static::SETTINGS);
+
+    $configFactory->set('cmrf_connector', $form_state->getValue('cmrf_connector'));
+
+    foreach (array_keys($settings_definition['mapping']['redirect_paths']['mapping']) as $redirect_path) {
+      if (!empty($value = $form_state->getValue(['redirect_paths', $redirect_path]))) {
+        $configFactory->set('redirect_paths.' . $redirect_path, $value);
+      }
+      else {
+        $configFactory->clear('redirect_paths.' . $redirect_path);
+      }
+    }
+
+    $configFactory->save();
 
     parent::submitForm($form, $form_state);
   }

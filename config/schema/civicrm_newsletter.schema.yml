@@ -4,3 +4,15 @@ civicrm_newsletter.settings:
     cmrf_connector:
       type: string
       label: 'CiviMRF Connector'
+    redirect_paths:
+      type: mapping
+      mapping:
+        subscription_form:
+          type: string
+          label: 'Redirect path for the subscription form'
+        preferences_form:
+          type: string
+          label: 'Redirect path for the preferences form'
+        request_link_form:
+          type: string
+          label: 'Redirect path for the request-link form'
