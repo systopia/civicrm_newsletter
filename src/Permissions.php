@@ -68,16 +68,34 @@ class Permissions implements ContainerInjectionInterface {
 
       foreach ($this->cmrf->profileGet() as $profile_name => $profile) {
         $permissions['access civicrm newsletter subscription form ' . $profile_name] = [
-          'title' => t('Access newsletter subscription form with profile ' . $profile_name),
-          'description' => t('Allow users to access the public newsletter subscription form with profile ' . $profile_name . '.'),
+          'title' => t(
+            'Access newsletter subscription form with profile %profile_name',
+            ['%profile_name' => $profile_name]
+          ),
+          'description' => t(
+            'Allow users to access the public newsletter subscription form with profile %profile_name.',
+            ['%profile_name' =>$profile_name]
+          ),
         ];
         $permissions['access civicrm newsletter preferences form ' . $profile_name] = [
-          'title' => t('Access newsletter preferences form with profile ' . $profile_name),
-          'description' => t('Allow users to access the newsletter preferences form with profile ' . $profile_name . '.'),
+          'title' => t(
+            'Access newsletter preferences form with profile %profile_name',
+            ['%profile_name' => $profile_name]
+          ),
+          'description' => t(
+            'Allow users to access the newsletter preferences form with profile %profile_name.',
+            ['%profile_name' => $profile_name]
+          ),
         ];
         $permissions['access civicrm newsletter request form ' . $profile_name] = [
-          'title' => t('Access newsletter request form ' . $profile_name),
-          'description' => t('Allow users to access the request link form for profile ' . $profile_name . '.'),
+          'title' => t(
+            'Access newsletter request form with profile %profile_name',
+            ['%profile_name' => $profile_name]
+          ),
+          'description' => t(
+            'Allow users to access the request link form for profile %profile_name.',
+            ['%profile_name' => $profile_name]
+          ),
         ];
       }
     }
