@@ -4,12 +4,18 @@ civicrm_newsletter.settings:
     cmrf_connector:
       type: string
       label: 'CiviMRF Connector'
+    preferences_autoconfirm:
+      type: boolean
+      label: 'Confirm subscriptions in preferences form'
     redirect_paths:
       type: mapping
       mapping:
         subscription_form:
           type: string
           label: 'Redirect path for the subscription form'
+        optin_page:
+          type: string
+          label: 'Redirect path for the opt-in page'
         preferences_form:
           type: string
           label: 'Redirect path for the preferences form'

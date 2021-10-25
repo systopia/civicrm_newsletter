@@ -77,6 +77,8 @@ class PreferencesForm extends FormBase {
     stdClass $profile = NULL,
     $contact_hash = NULL
   ) {
+    $config = Drupal::config('civicrm_newsletter.settings');
+
     // Include the Advanced Newsletter Management profile name.
     $form['profile'] = array(
       '#type' => 'value',
@@ -93,7 +95,7 @@ class PreferencesForm extends FormBase {
         ['profile' => $profile->name]
       );
     }
-    else {
+    elseif ($config->get('preferences_autoconfirm')) {
       // Automatically confirm pending subscriptions.
       $result = $this->cmrf->subscriptionAutoconfirm(array(
         'contact_id' => $subscription['contact']['id'],
@@ -110,6 +112,11 @@ class PreferencesForm extends FormBase {
       elseif (!empty($result['values'])) {
         Drupal::messenger()->addStatus(
           $this->t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
+        );
+      }
+      else {
+        Drupal::messenger()->addStatus(
+          $this->t('Your confirmation has been successfully submitted, but no subscriptions were pending to be confirmed.')
         );
       }
 

@@ -18,6 +18,21 @@ civicrm_newsletter.subscription_form:
       profile:
         type: civicrm_newsletter_profile
 
+civicrm_newsletter.optin:
+  path: '/civicrm_newsletter/optin/{profile}/{contact_hash}'
+  defaults:
+    _title_callback: '\Drupal\civicrm_newsletter\Controller\OptIn::title'
+    _controller: '\Drupal\civicrm_newsletter\Controller\OptIn::buildPage'
+  requirements:
+    _custom_access: '\Drupal\civicrm_newsletter\Controller\OptIn::access'
+  options:
+    parameters:
+      profile:
+        type: civicrm_newsletter_profile
+      contact_hash:
+        type: string
+    no_cache: TRUE
+
 civicrm_newsletter.preferences_form:
   path: '/civicrm_newsletter/preferences/{profile}/{contact_hash}'
   defaults:

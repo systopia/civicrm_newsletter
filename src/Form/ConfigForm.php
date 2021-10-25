@@ -91,6 +91,13 @@ class ConfigForm extends ConfigFormBase {
       '#required' => TRUE,
     ];
 
+    $form['preferences_autoconfirm'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Confirm subscriptions in preferences form'),
+      '#description' => $this->t('Whether to automatically confirm pending subscriptions when loading the preferences form. When this is disabled, subscriptions can only be confirmed using the opt-in URL.'),
+      '#default_value' => $config->get('preferences_autoconfirm'),
+    ];
+
     $settings_definition = Drupal::service('config.typed')
       ->getDefinition(static::SETTINGS);
     $form['redirect_paths'] = [
