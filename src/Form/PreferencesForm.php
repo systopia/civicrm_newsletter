@@ -105,18 +105,18 @@ class PreferencesForm extends FormBase {
       if (!empty($result['is_error'])) {
         // The API call returned an error, rebuild the form and notify the user.
         Drupal::messenger()->addError(
-          $this->t('Your confirmation could not be submitted, please try again later.')
+          $this->t('Your confirmation of pending subscriptions could not be submitted, please try again later.')
         );
         $form_state->setRebuild();
       }
       elseif (!empty($result['values'])) {
         Drupal::messenger()->addStatus(
-          $this->t('Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
+          $this->t('Your confirmation of pending subscriptions has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
         );
       }
       else {
         Drupal::messenger()->addStatus(
-          $this->t('Your confirmation has been successfully submitted, but no subscriptions were pending to be confirmed.')
+          $this->t('Your confirmation of pending subscriptions has been successfully submitted, but no subscriptions were pending to be confirmed.')
         );
       }
 
