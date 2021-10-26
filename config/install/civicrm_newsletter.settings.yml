@@ -1,3 +1,4 @@
 cmrf_connector: civicrm_newsletter
 preferences_autoconfirm: true
 redirect_paths: []
+redirect_disable_messages: false

@@ -208,6 +208,7 @@ class PreferencesForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = Drupal::config('civicrm_newsletter.settings');
+    $messages = [];
 
     // Clean the submitted values from Drupal Form API stuff.
     $params = clone $form_state;
@@ -234,16 +235,19 @@ class PreferencesForm extends FormBase {
         $this->t('Your subscription preferences could not be submitted, please try again later.')
       );
       $form_state->setRebuild();
+      return;
     }
     elseif ($params['unsubscribe_all']) {
-      Drupal::messenger()->addStatus(
-        $this->t('Your unsubscription has been successfully submitted. You will receive an e-mail with a confirmation of your unsubscription.')
-      );
+      $messages[] = [
+        'status' => Drupal::messenger()::TYPE_STATUS,
+        'message' => $this->t('Your unsubscription has been successfully submitted. You will receive an e-mail with a confirmation of your unsubscription.'),
+      ];
     }
     else {
-      Drupal::messenger()->addStatus(
-        $this->t('Your subscription preferences have been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
-      );
+      $messages[] = [
+        'status' => Drupal::messenger()::TYPE_STATUS,
+        'message' => $this->t('Your subscription preferences have been successfully submitted. You will receive an e-mail with a summary of your subscriptions.'),
+      ];
     }
 
     // Redirect to target from configuration.
@@ -269,6 +273,15 @@ class PreferencesForm extends FormBase {
         $url->getRouteParameters(),
         $url->getOptions()
       );
+    }
+    if (!$form_state->getRedirect() || !$config->get('redirect_disable_messages')) {
+      foreach ($messages as $message) {
+        switch ($message['status']) {
+          case Drupal::messenger()::TYPE_STATUS:
+            Drupal::messenger()->addStatus($message['message']);
+            break;
+        }
+      }
     }
   }
 

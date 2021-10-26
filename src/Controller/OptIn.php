@@ -24,6 +24,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class OptIn extends ControllerBase {
 
@@ -101,6 +102,7 @@ class OptIn extends ControllerBase {
   public function buildPage(stdClass $profile = NULL, $contact_hash = NULL) {
     $config = Drupal::config('civicrm_newsletter.settings');
     $page = [];
+    $messages = [];
 
     // Retrieve subscription status for contact.
     if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_hash)) {
@@ -126,14 +128,16 @@ class OptIn extends ControllerBase {
         );
       }
       elseif (!empty($result['values'])) {
-        Drupal::messenger()->addStatus(
-          $this->t('Your confirmation of pending subscriptions has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.')
-        );
+        $messages[] = [
+          'status' => Drupal::messenger()::TYPE_STATUS,
+          'message' => $this->t('Your confirmation of pending subscriptions has been successfully submitted. You will receive an e-mail with a summary of your subscriptions.'),
+        ];
       }
       else {
-        Drupal::messenger()->addStatus(
-          $this->t('Your confirmation of pending subscriptions has been successfully submitted, but no subscriptions were pending to be confirmed.')
-        );
+        $messages[] = [
+          'status' => Drupal::messenger()::TYPE_STATUS,
+          'message' => $this->t('Your confirmation of pending subscriptions has been successfully submitted, but no subscriptions were pending to be confirmed.'),
+        ];
       }
     }
 
@@ -147,6 +151,15 @@ class OptIn extends ControllerBase {
         $url->getRouteParameters(),
         $url->getOptions()
       );
+    }
+    if (!is_a($page, RedirectResponse::class) || !$config->get('redirect_disable_messages')) {
+      foreach ($messages as $message) {
+        switch ($message['status']) {
+          case Drupal::messenger()::TYPE_STATUS:
+            Drupal::messenger()->addStatus($message['message']);
+            break;
+        }
+      }
     }
 
     return $page;

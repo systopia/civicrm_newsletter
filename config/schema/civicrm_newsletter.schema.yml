@@ -25,3 +25,6 @@ civicrm_newsletter.settings:
         request_link_form:
           type: string
           label: 'Redirect path for the request-link form'
+    redirect_disable_messages:
+      type: boolean
+      label: 'Disable status messages when redirecting'

@@ -115,6 +115,12 @@ class ConfigForm extends ConfigFormBase {
         '#convert_path' => PathElement::CONVERT_NONE,
       ];
     }
+    $form['redirect_disable_messages'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Disable status messages when redirecting'),
+      '#description' => $this->t('Whether to not show status messages when redirecting. This may be useful when you want full control over what to display to the user on a separate page.'),
+      '#default_value' => $config->get('redirect_disable_messages'),
+    ];
 
     return $form;
   }
@@ -128,7 +134,7 @@ class ConfigForm extends ConfigFormBase {
     $configFactory = $this->configFactory()->getEditable(static::SETTINGS);
 
     $configFactory->set('cmrf_connector', $form_state->getValue('cmrf_connector'));
-
+    $configFactory->set('preferences_autoconfirm', $form_state->getValue('preferences_autoconfirm'));
     foreach (array_keys($settings_definition['mapping']['redirect_paths']['mapping']) as $redirect_path) {
       if (!empty($value = $form_state->getValue(['redirect_paths', $redirect_path]))) {
         $configFactory->set('redirect_paths.' . $redirect_path, $value);
@@ -137,6 +143,7 @@ class ConfigForm extends ConfigFormBase {
         $configFactory->clear('redirect_paths.' . $redirect_path);
       }
     }
+    $configFactory->set('redirect_disable_messages', $form_state->getValue('redirect_disable_messages'));
 
     $configFactory->save();
 

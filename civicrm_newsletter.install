@@ -20,3 +20,14 @@ function civicrm_newsletter_update_8102(&$sandbox) {
   $config->set('preferences_autoconfirm', TRUE);
   $config->save(TRUE);
 }
+
+/**
+ * Add configuration option "redirect_disable_messages" with default value of
+ * FALSE for backwards-compatibility.
+ */
+function civicrm_newsletter_update_8103(&$sandbox) {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('civicrm_newsletter.settings');
+  $config->set('redirect_disable_messages', FALSE);
+  $config->save(TRUE);
+}
