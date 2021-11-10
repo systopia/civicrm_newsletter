@@ -146,6 +146,7 @@ class RequestLinkForm extends FormBase {
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = Drupal::config('civicrm_newsletter.settings');
+    $messages = [];
 
     // Clean the submitted values from Drupal Form API stuff.
     $params = clone $form_state;
@@ -163,9 +164,10 @@ class RequestLinkForm extends FormBase {
       $form_state->setRebuild();
     }
     else {
-      Drupal::messenger()->addStatus(
-        $this->t('Your request has been successfully submitted. You will receive an e-mail with a link to a confirmation page.')
-      );
+      $messages[] = [
+        'status' => Drupal::messenger()::TYPE_STATUS,
+        'message' => $this->t('Your request has been successfully submitted. You will receive an e-mail with a link to a confirmation page.'),
+      ];
 
       // Redirect to target from configuration.
       if (!empty($redirect_path = $config->get('redirect_paths.request_link_form'))) {
@@ -177,6 +179,15 @@ class RequestLinkForm extends FormBase {
           $url->getRouteParameters(),
           $url->getOptions()
         );
+      }
+      if (!$form_state->getRedirect() || !$config->get('redirect_disable_messages')) {
+        foreach ($messages as $message) {
+          switch ($message['status']) {
+            case Drupal::messenger()::TYPE_STATUS:
+              Drupal::messenger()->addStatus($message['message']);
+              break;
+          }
+        }
       }
     }
   }
