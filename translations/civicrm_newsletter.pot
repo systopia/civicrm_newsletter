@@ -12,6 +12,7 @@
 #  modules/custom/civicrm_newsletter/js/civicrm_newsletter.js: n/a
 #  modules/custom/civicrm_newsletter/src/CiviMRF.php: n/a
 #  modules/custom/civicrm_newsletter/src/Permissions.php: n/a
+#  modules/custom/civicrm_newsletter/src/Controller/OptIn.php: n/a
 #  modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php: n/a
 #  modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php: n/a
 #  modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php: n/a
@@ -20,7 +21,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CiviCRM Advanced Newsletter Management VERSION\n"
-"POT-Creation-Date: 2021-07-07 12:45+0200\n"
+"POT-Creation-Date: 2021-11-10 11:30+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -58,6 +59,14 @@ msgid "Allow users to access the public newsletter subscription form for any pro
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Access all newsletter opt-in pages"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+msgid "Allow users to access the newsletter opt-in page for any profile."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
 msgid "Access all newsletter preferences forms"
 msgstr ""
 
@@ -77,8 +86,16 @@ msgstr ""
 msgid "CiviMRF Connector"
 msgstr ""
 
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0 modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:96
+msgid "Confirm subscriptions in preferences form"
+msgstr ""
+
 #: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the subscription form"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+msgid "Redirect path for the opt-in page"
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
@@ -86,7 +103,15 @@ msgid "Redirect path for the preferences form"
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+msgid "Redirect path for the preferences form when unsubscribing"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the request-link form"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0 modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:120
+msgid "Disable status messages when redirecting"
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
@@ -110,19 +135,43 @@ msgid "Allow users to access the public newsletter subscription form with profil
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Permissions.php:81
-msgid "Access newsletter preferences form with profile %profile_name"
+msgid "Access newsletter opt-in page with profile %profile_name"
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Permissions.php:85
-msgid "Allow users to access the newsletter preferences form with profile %profile_name."
+msgid "Allow users to access the newsletter opt-in page with profile %profile_name."
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Permissions.php:91
-msgid "Access newsletter request form with profile %profile_name"
+msgid "Access newsletter preferences form with profile %profile_name"
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Permissions.php:95
+msgid "Allow users to access the newsletter preferences form with profile %profile_name."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:101
+msgid "Access newsletter request form with profile %profile_name"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Permissions.php:105
 msgid "Allow users to access the request link form for profile %profile_name."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:110 modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:91 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:83
+msgid "Could not retrieve the newsletter subscription status. Please request a new confirmation link."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:127 modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:109
+msgid "Your confirmation of pending subscriptions could not be submitted, please try again later."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:133 modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:115
+msgid "Your confirmation of pending subscriptions has been successfully submitted. You will receive an e-mail with a summary of your subscriptions."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:139 modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:120
+msgid "Your confirmation of pending subscriptions has been successfully submitted, but no subscriptions were pending to be confirmed."
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:82
@@ -133,32 +182,40 @@ msgstr ""
 msgid "Configure CiviMRF Connectors"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:99
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:97
+msgid "Whether to automatically confirm pending subscriptions when loading the preferences form. When this is disabled, subscriptions can only be confirmed using the opt-in URL."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:106
 msgid "Redirect paths"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:100
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:107
 msgid "You may define paths to redirect to after successful submissions of the respective forms."
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:89 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:83
-msgid "Could not retrieve the newsletter subscription status. Please request a new confirmation link."
+#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:121
+msgid "Whether to not show status messages when redirecting. This may be useful when you want full control over what to display to the user on a separate page."
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:106;225
-msgid "Your confirmation could not be submitted, please try again later."
-msgstr ""
-
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:112;231
-msgid "Your confirmation has been successfully submitted. You will receive an e-mail with a summary of your subscriptions."
-msgstr ""
-
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:140 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:131 modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:94
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:150 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:131 modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:94
 msgid "- None -"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:193 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:140 modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:125
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:203 modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:140 modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:125
 msgid "Submit"
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:235
+msgid "Your subscription preferences could not be submitted, please try again later."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:243
+msgid "Your unsubscription has been successfully submitted. You will receive an e-mail with a confirmation of your unsubscription."
+msgstr ""
+
+#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:249
+msgid "Your subscription preferences have been successfully submitted. You will receive an e-mail with a summary of your subscriptions."
 msgstr ""
 
 #: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:101;161
