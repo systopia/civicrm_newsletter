@@ -77,6 +77,16 @@ class Permissions implements ContainerInjectionInterface {
             ['%profile_name' =>$profile_name]
           ),
         ];
+        $permissions['access civicrm newsletter opt-in page ' . $profile_name] = [
+          'title' => t(
+            'Access newsletter opt-in page with profile %profile_name',
+            ['%profile_name' => $profile_name]
+          ),
+          'description' => t(
+            'Allow users to access the newsletter opt-in page with profile %profile_name.',
+            ['%profile_name' => $profile_name]
+          ),
+        ];
         $permissions['access civicrm newsletter preferences form ' . $profile_name] = [
           'title' => t(
             'Access newsletter preferences form with profile %profile_name',

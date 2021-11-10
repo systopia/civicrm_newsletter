@@ -4,6 +4,9 @@ administer civicrm newsletter:
 access all civicrm newsletter subscription forms:
   title: 'Access all newsletter subscription forms'
   description: 'Allow users to access the public newsletter subscription form for any profile.'
+access all civicrm newsletter opt-in pages:
+  title: 'Access all newsletter opt-in pages'
+  description: 'Allow users to access the newsletter opt-in page for any profile.'
 access all civicrm newsletter preferences forms:
   title: 'Access all newsletter preferences forms'
   description: 'Allow users to access the newsletter preferences form for any profile.'
