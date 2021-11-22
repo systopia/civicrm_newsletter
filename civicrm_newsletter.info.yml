@@ -11,4 +11,4 @@ dependencies:
 'interface translation project': civicrm_newsletter
 'interface translation server pattern': https://systopia.github.io/civicrm_newsletter/translations/%language.po
 
-version: 1.x-dev
+version: 1.0-beta4
