@@ -1,7 +1,6 @@
 TODO: Complete Readme
 
 additionally Required Modules:
-* CiviCRM Core
 * CMRF Core
 
 Basic Configuration
