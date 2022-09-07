@@ -98,6 +98,13 @@ class ConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('preferences_autoconfirm'),
     ];
 
+    $form['parent_groups_selectable'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Make parent mailing lists selectable'),
+      '#description' => $this->t('Whether parent mailings lists in the group hierarchy should be selectable. Otherwise, they will only show as fieldset labels for their children.'),
+      '#default_value' => $config->get('parent_groups_selectable'),
+    ];
+
     $settings_definition = Drupal::service('config.typed')
       ->getDefinition(static::SETTINGS);
     $form['redirect_paths'] = [
@@ -135,6 +142,7 @@ class ConfigForm extends ConfigFormBase {
 
     $configFactory->set('cmrf_connector', $form_state->getValue('cmrf_connector'));
     $configFactory->set('preferences_autoconfirm', $form_state->getValue('preferences_autoconfirm'));
+    $configFactory->set('parent_groups_selectable', $form_state->getValue('parent_groups_selectable'));
     foreach (array_keys($settings_definition['mapping']['redirect_paths']['mapping']) as $redirect_path) {
       if (!empty($value = $form_state->getValue(['redirect_paths', $redirect_path]))) {
         $configFactory->set('redirect_paths.' . $redirect_path, $value);

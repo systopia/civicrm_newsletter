@@ -16,6 +16,8 @@
 namespace Drupal\civicrm_newsletter;
 
 
+use Drupal;
+
 class Utils {
 
   /**
@@ -44,9 +46,12 @@ class Utils {
    * @return array
    */
   public static function mailingListsTreeCheckboxes($tree, $default_values = array()) {
-    $element = array(
-      '#type' => 'fieldset',
-    );
+    $element = array();
+    // Add an extra level of fieldsets for distinguishing between parent and
+    // child groups.
+    if (Drupal::config('civicrm_newsletter.settings')->get('parent_groups_selectable')) {
+      $element['#type'] = 'fieldset';
+    }
 
     foreach ($tree as $group_id => $group_definition) {
       $checkbox = array(
@@ -64,8 +69,12 @@ class Utils {
           '#title' => $group_definition['title'],
           '#description' => $group_definition['description'],
         );
-        // Checkbox for the group itself.
-        $element[$group_id . '_fieldset']['mailing_lists_' . $group_id] = $checkbox;
+
+        if (Drupal::config('civicrm_newsletter.settings')->get('parent_groups_selectable')) {
+          // Checkbox for the group itself.
+          $element[$group_id . '_fieldset']['mailing_lists_' . $group_id] = $checkbox;
+        }
+
         // Nested fieldset with checkboxes.
         $element[$group_id . '_fieldset']['children'] = self::mailingListsTreeCheckboxes($group_definition['children'], $default_values);
       }
