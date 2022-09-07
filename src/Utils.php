@@ -71,6 +71,8 @@ class Utils {
       else {
         $element['mailing_lists_' . $group_id] = $checkbox;
         // Move groups without children to the top of the fieldset.
+        // TODO: Instead, increase weight of groups with children for keeping
+        //       the implicit ordering of groups within each level of hierarchy.
         $element['mailing_lists_' . $group_id]['#weight'] = -1;
       }
     }
