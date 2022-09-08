@@ -29,6 +29,7 @@ class Utils {
       'Multi-Select' => 'checkboxes',
       'Text' => 'textfield',
       'Textarea' => 'textarea',
+      'CheckBox' => 'checkbox',
     );
   }
 
