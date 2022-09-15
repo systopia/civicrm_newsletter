@@ -1,8 +1,6 @@
 ## Additionally Required Modules:
 
 * [CiviMRF Core](https://drupal.org/project/cmrf_core)
-* [Advanced Newsletter Manager (CiviCRM extension)](https://github.com/systopia/de.systopia.newsletter)
-* [Extended Contact Matcher, XCM (CiviCRM extension)](https://github.com/systopia/de.systopia.xcm)
 
 ## Basic Configuration
 
@@ -15,6 +13,9 @@
 * Select defined CiviMRF Connector at
   `/admin/config/services/civicrm_newsletter`
 * Configure your Advanced Newsletter Management profiles in CiviCRM
+  * Install and configure CiviCRM extensions:
+    * [Extended Contact Matcher, XCM (CiviCRM extension)](https://github.com/systopia/de.systopia.xcm)
+    * [Advanced Newsletter Management (CiviCRM extension)](https://github.com/systopia/de.systopia.newsletter)
 
 You should then be able to access your default subscription page:
 `/civicrm_newsletter/subscribe/<profile_name>`
