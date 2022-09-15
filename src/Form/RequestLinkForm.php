@@ -26,6 +26,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 # For Admin:
 # use Drupal\Core\Form\ConfigFormBase;
@@ -139,6 +140,19 @@ class RequestLinkForm extends FormBase {
         '#type' => 'submit',
         '#value' => t('Submit'),
       );
+    }
+
+    // Support Honeypot module, see
+    // https://www.drupal.org/project/honeypot.
+    try {
+      Drupal::service('honeypot')
+        ->addFormProtection($form, $form_state, [
+          'honeypot',
+          'time_restriction',
+        ]);
+    }
+    catch (ServiceNotFoundException $exception) {
+      // Nothing to do if the service does not exist.
     }
 
     return $form;
