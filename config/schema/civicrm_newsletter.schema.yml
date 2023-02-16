@@ -7,6 +7,9 @@ civicrm_newsletter.settings:
     preferences_autoconfirm:
       type: boolean
       label: 'Confirm subscriptions in preferences form'
+    parent_groups_selectable:
+      type: boolean
+      label: 'Make parent mailing lists selectable'
     redirect_paths:
       type: mapping
       mapping:

@@ -31,3 +31,14 @@ function civicrm_newsletter_update_8103(&$sandbox) {
   $config->set('redirect_disable_messages', FALSE);
   $config->save(TRUE);
 }
+
+/**
+ * Add configuration option "parent_groups_selectable" with default value of
+ * TRUE for backwards-compatibility.
+ */
+function civicrm_newsletter_update_8104(&$sandbox) {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('civicrm_newsletter.settings');
+  $config->set('parent_groups_selectable', TRUE);
+  $config->save(TRUE);
+}
