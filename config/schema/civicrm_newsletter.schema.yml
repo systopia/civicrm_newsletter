@@ -10,6 +10,9 @@ civicrm_newsletter.settings:
     parent_groups_selectable:
       type: boolean
       label: 'Make parent mailing lists selectable'
+    single_group_hide:
+      type: boolean
+      label: 'Hide checkbox for single mailing list'
     redirect_paths:
       type: mapping
       mapping:

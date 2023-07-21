@@ -73,6 +73,8 @@ class SubscriptionForm extends FormBase {
    * @inheritDoc
    */
   public function buildForm(array $form, FormStateInterface $form_state, stdClass $profile = NULL) {
+    $config = Drupal::config('civicrm_newsletter.settings');
+
     // Include the Advanced Newsletter Management profile name.
     $form['profile'] = array(
       '#type' => 'value',
@@ -99,7 +101,7 @@ class SubscriptionForm extends FormBase {
     }
 
     // Add mailing lists selection.
-    if (1 === count($profile->mailing_lists)) {
+    if ($config->get('single_group_hide') && 1 === count($profile->mailing_lists)) {
       // Show no selection if there's only one mailing list.
       $mailing_list_id = key($profile->mailing_lists);
       $form['mailing_lists_' . $mailing_list_id] = [

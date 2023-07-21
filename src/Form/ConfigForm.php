@@ -105,6 +105,13 @@ class ConfigForm extends ConfigFormBase {
       '#default_value' => $config->get('parent_groups_selectable'),
     ];
 
+    $form['single_group_hide'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Hide checkbox for single mailing list'),
+      '#description' => $this->t('Whether to hide the mailing list checkbox when there is only one available. Otherwise, users will have to actively enable the single mailing list for subscribing.'),
+      '#default_value' => $config->get('single_group_hide'),
+    ];
+
     $settings_definition = Drupal::service('config.typed')
       ->getDefinition(static::SETTINGS);
     $form['redirect_paths'] = [
@@ -143,6 +150,7 @@ class ConfigForm extends ConfigFormBase {
     $configFactory->set('cmrf_connector', $form_state->getValue('cmrf_connector'));
     $configFactory->set('preferences_autoconfirm', $form_state->getValue('preferences_autoconfirm'));
     $configFactory->set('parent_groups_selectable', $form_state->getValue('parent_groups_selectable'));
+    $configFactory->set('single_group_hide', $form_state->getValue('single_group_hide'));
     foreach (array_keys($settings_definition['mapping']['redirect_paths']['mapping']) as $redirect_path) {
       if (!empty($value = $form_state->getValue(['redirect_paths', $redirect_path]))) {
         $configFactory->set('redirect_paths.' . $redirect_path, $value);
