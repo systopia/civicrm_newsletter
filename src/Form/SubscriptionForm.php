@@ -73,6 +73,8 @@ class SubscriptionForm extends FormBase {
    * @inheritDoc
    */
   public function buildForm(array $form, FormStateInterface $form_state, stdClass $profile = NULL) {
+    $config = Drupal::config('civicrm_newsletter.settings');
+
     // Include the Advanced Newsletter Management profile name.
     $form['profile'] = array(
       '#type' => 'value',
@@ -99,15 +101,25 @@ class SubscriptionForm extends FormBase {
     }
 
     // Add mailing lists selection.
-    $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes($profile->mailing_lists_tree);
-    $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
-    $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
-    $form['mailing_lists']['#attributes'] = array(
-      'class' => array(
-        'form-item-mailing-lists',
-      ),
-    );
-    $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
+    if ($config->get('single_group_hide') && 1 === count($profile->mailing_lists)) {
+      // Show no selection if there's only one mailing list.
+      $mailing_list_id = key($profile->mailing_lists);
+      $form['mailing_lists_' . $mailing_list_id] = [
+        '#type' => 'value',
+        '#value' => 1,
+      ];
+    }
+    else {
+      $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes($profile->mailing_lists_tree);
+      $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
+      $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
+      $form['mailing_lists']['#attributes'] = array(
+        'class' => array(
+          'form-item-mailing-lists',
+        ),
+      );
+      $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
+    }
 
     // Add terms and conditions.
     if (!empty($profile->conditions_public)) {
