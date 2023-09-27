@@ -32,7 +32,22 @@ class Utils {
       'Text' => 'textfield',
       'Textarea' => 'textarea',
       'CheckBox' => 'checkbox',
+      'Radio' => 'radio',
     );
+  }
+
+  public static function getContactFieldType($field) {
+    $type = self::contactFieldTypes()[$field['type']];
+    if ($type == 'checkbox' && isset($field['options'])) {
+      $type = 'checkboxes';
+    }
+    if ($type == 'radio' && isset($field['options'])) {
+      $type = 'radios';
+    }
+     if ($type == 'radio' && !isset($field['options'])) {
+       $type = 'checkbox';
+     }
+    return $type;
   }
 
   /**
@@ -46,7 +61,7 @@ class Utils {
    * @return array
    */
   public static function mailingListsTreeCheckboxes($tree, $default_values = array()) {
-    $element = array();
+    $element = [];
     // Add an extra level of fieldsets for distinguishing between parent and
     // child groups.
     if (Drupal::config('civicrm_newsletter.settings')->get('parent_groups_selectable')) {
