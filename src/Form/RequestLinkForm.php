@@ -121,7 +121,7 @@ class RequestLinkForm extends FormBase {
       foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
         if ($contact_field['active']) {
           $form[$contact_field_name] = array(
-            '#type' => Utils::contactFieldTypes()[$contact_field['type']],
+            '#type' => Utils::getContactFieldType($contact_field),
             '#title' => $contact_field['label'],
             '#description' => $contact_field['description'],
             '#required' => !empty($contact_field['required']),
@@ -166,6 +166,17 @@ class RequestLinkForm extends FormBase {
     $params = clone $form_state;
     $params->cleanValues();
     $params = $params->getValues();
+
+    foreach ($params as $name => $value) {
+      if (is_array($value)) {
+        // For fields with multiple values, drop those that are unchecked, i.e.
+        // those that don't match their key (as unchecked checkboxes have a
+        // value of 0, and checked ones their respective key.
+        $params[$name] = array_filter($value, function($value, $key) {
+          return $key == $value;
+        }, ARRAY_FILTER_USE_BOTH);
+      }
+    }
 
     // Submit the subscription using CiviMRF.
     $result = $this->cmrf->subscriptionRequest($params);

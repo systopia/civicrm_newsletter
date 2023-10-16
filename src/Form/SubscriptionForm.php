@@ -86,7 +86,7 @@ class SubscriptionForm extends FormBase {
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if ($contact_field['active']) {
         $form[$contact_field_name] = array(
-          '#type' => Utils::contactFieldTypes()[$contact_field['type']],
+          '#type' => Utils::getContactFieldType($contact_field),
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#required' => !empty($contact_field['required']),
@@ -111,6 +111,7 @@ class SubscriptionForm extends FormBase {
     }
     else {
       $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes($profile->mailing_lists_tree);
+      $form['mailing_lists']['#type'] = 'fieldset';
       $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
       $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
       $form['mailing_lists']['#attributes'] = array(
@@ -184,15 +185,24 @@ class SubscriptionForm extends FormBase {
     $params->cleanValues();
     $params = $params->getValues();
 
-    // Build mailing_lists array.
     foreach ($params as $name => $value) {
       if (strpos($name, 'mailing_lists_') === 0) {
-        $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
+        // Build mailing_lists array - extract single values and drop those that
+        // are unchecked (==0).
+        if ($value !== 0) {
+          $params['mailing_lists'][] = explode('mailing_lists_', $name)[1];
+        }
         unset($params[$name]);
       }
+      elseif (is_array($value)) {
+        // For fields with multiple values, drop those that are unchecked, i.e.
+        // those that don't match their key (as unchecked checkboxes have a
+        // value of 0, and checked ones their respective key.
+        $params[$name] = array_filter($value, function($value, $key) {
+          return $key == $value;
+        }, ARRAY_FILTER_USE_BOTH);
+      }
     }
-    // Remove unchecked checkbox values (those that are 0).
-    $params['mailing_lists'] = array_keys(array_filter($params['mailing_lists']));
 
     // Submit the subscription using CiviMRF.
     $result = $this->cmrf->subscriptionSubmit($params);

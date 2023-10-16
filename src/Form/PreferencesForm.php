@@ -137,7 +137,7 @@ class PreferencesForm extends FormBase {
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if ($contact_field['active']) {
         $form[$contact_field_name] = [
-          '#type' => Utils::contactFieldTypes()[$contact_field['type']],
+          '#type' => Utils::getContactFieldType($contact_field),
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#default_value' => $subscription['contact'][$contact_field_name],
@@ -158,6 +158,7 @@ class PreferencesForm extends FormBase {
       $profile->mailing_lists_tree,
       $subscription['subscription_status']
     );
+    $form['mailing_lists']['#type'] = 'fieldset';
     $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
     $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
     $form['mailing_lists']['#attributes'] = [
@@ -220,6 +221,14 @@ class PreferencesForm extends FormBase {
       if (strpos($name, 'mailing_lists_') === 0) {
         $params['mailing_lists'][explode('mailing_lists_', $name)[1]] = $value;
         unset($params[$name]);
+      }
+      elseif (is_array($value)) {
+        // For fields with multiple values, drop those that are unchecked, i.e.
+        // those that don't match their key (as unchecked checkboxes have a
+        // value of 0, and checked ones their respective key.
+        $params[$name] = array_filter($value, function($value, $key) {
+          return $key == $value;
+        }, ARRAY_FILTER_USE_BOTH);
       }
     }
     $params['mailing_lists'] = array_map(function($value) {
