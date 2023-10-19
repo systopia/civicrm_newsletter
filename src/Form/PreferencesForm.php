@@ -75,7 +75,7 @@ class PreferencesForm extends FormBase {
     array $form,
     FormStateInterface $form_state,
     stdClass $profile = NULL,
-    $contact_hash = NULL
+    $contact_checksum = NULL
   ) {
     $config = Drupal::config('civicrm_newsletter.settings');
 
@@ -86,7 +86,7 @@ class PreferencesForm extends FormBase {
     );
 
     // Retrieve subscription status for contact.
-    if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_hash)) {
+    if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_checksum)) {
       Drupal::messenger()->addWarning(
         $this->t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.')
       );
@@ -100,7 +100,7 @@ class PreferencesForm extends FormBase {
         // Automatically confirm pending subscriptions.
         $result = $this->cmrf->subscriptionAutoconfirm([
           'contact_id' => $subscription['contact']['id'],
-          'contact_hash' => $subscription['contact']['hash'],
+          'contact_checksum' => $subscription['contact']['checksum'],
           'profile' => $profile->name,
         ]);
         if (!empty($result['is_error'])) {
@@ -123,9 +123,9 @@ class PreferencesForm extends FormBase {
       }
     }
 
-    $form['contact_hash'] = [
+    $form['contact_checksum'] = [
       '#type' => 'value',
-      '#value' => $subscription['contact']['hash'],
+      '#value' => $subscription['contact']['checksum'],
     ];
     $form['contact_id'] = [
       '#type' => 'value',

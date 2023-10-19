@@ -75,11 +75,11 @@ class RequestLinkForm extends FormBase {
     array $form,
     FormStateInterface $form_state,
     stdClass $profile = NULL,
-    $contact_hash = NULL
+    $contact_checksum = NULL
   ) {
-    // If a hash is given, submit to the request API action without showing a form.
-    if ($contact_hash) {
-      if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_hash)) {
+    // If a checksum is given, submit to the request API action without showing a form.
+    if ($contact_checksum) {
+      if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_checksum)) {
         Drupal::messenger()->addWarning(
           $this->t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.')
         );
@@ -91,7 +91,7 @@ class RequestLinkForm extends FormBase {
 
       $params = array(
         'profile' => $profile->name,
-        'contact_hash' => $subscription['contact']['hash'],
+        'contact_checksum' => $subscription['contact']['checksum'],
         'contact_id' => $subscription['contact']['id'],
       );
       $result = $this->cmrf->subscriptionRequest($params);

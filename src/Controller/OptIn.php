@@ -96,16 +96,16 @@ class OptIn extends ControllerBase {
    *
    * @param stdClass $profile
    *   The Advanced Newsletter Management profile.
-   * @param null $contact_hash
-   *   The CiviCRM Contact hash identifying the newsletter subscriber.
+   * @param null $contact_checksum
+   *   The CiviCRM Contact checksum identifying the newsletter subscriber.
    */
-  public function buildPage(stdClass $profile = NULL, $contact_hash = NULL) {
+  public function buildPage(stdClass $profile = NULL, $contact_checksum = NULL) {
     $config = Drupal::config('civicrm_newsletter.settings');
     $page = [];
     $messages = [];
 
     // Retrieve subscription status for contact.
-    if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_hash)) {
+    if (!$subscription = $this->cmrf->subscriptionGet($profile->name, $contact_checksum)) {
       Drupal::messenger()->addWarning(
         $this->t('Could not retrieve the newsletter subscription status. Please request a new confirmation link.')
       );
@@ -118,7 +118,7 @@ class OptIn extends ControllerBase {
       // Automatically confirm pending subscriptions.
       $result = $this->cmrf->subscriptionAutoconfirm([
         'contact_id' => $subscription['contact']['id'],
-        'contact_hash' => $subscription['contact']['hash'],
+        'contact_checksum' => $subscription['contact']['checksum'],
         'profile' => $profile->name,
       ]);
       if (!empty($result['is_error'])) {
