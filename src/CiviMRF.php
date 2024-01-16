@@ -140,27 +140,27 @@ class CiviMRF {
   }
 
   /**
-   * Retrieves the subscription status for a given contact hash.
+   * Retrieves the subscription status for a given contact checksum.
    *
    * @param string | NULL $profile_name
    *   The name of the Advanced Newsletter Management profile to retrieve, or NULL
    *   to retrieve all configured Advanced Newsletter Management profiles.
    *
-   * @param string $contact_hash
+   * @param string $contact_checksum
    *
    * @return array | NULL
    *   The subscription status for the mailing lists defined within the Advanced
    *   Newsletter Management profile, or NULL if the subscription status could not
    *   be retrieved.
    */
-  public function subscriptionGet($profile_name, $contact_hash) {
+  public function subscriptionGet($profile_name, $contact_checksum) {
     $call = $call = $this->core->createCall(
       $this->connector(),
       'NewsletterSubscription',
       'get',
       [
         'profile' => $profile_name,
-        'contact_hash' => $contact_hash
+        'contact_checksum' => $contact_checksum
       ],
       []
     );
