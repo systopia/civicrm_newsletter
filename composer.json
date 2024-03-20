@@ -11,6 +11,6 @@
     ],
     "homepage": "https://github.com/systopia/civicrm_newsletter",
     "require": {
-        "drupal/cmrf_core": "^1.0@beta | ^2.0@beta"
+        "drupal/cmrf_core": "^1.0@beta | ^2.0@beta | ^2.1@beta"
     }
 }
