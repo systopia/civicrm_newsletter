@@ -2,8 +2,7 @@ name: CiviCRM Advanced Newsletter Management
 type: module
 description: 'In combination with the "Advanced Newsletter Management" extension, provides better Newsletter subscription and opt-in forms for CiviCRM contacts.'
 package: CiviCRM
-core: 8.x
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^9 || ^10
 configure: civicrm_newsletter.config_form
 dependencies:
   - cmrf_core
