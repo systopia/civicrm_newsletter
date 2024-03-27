@@ -5,6 +5,14 @@
 ## Basic Configuration
 
 * Install module and dependencies (see above)
+### in Drupal 10
+* Add, edit or check CiviMRF Profile (`/admin/config/cmrf/profiles`)
+* Add CiviMRF Connector at `/admin/config/cmrf/connectors`:
+  * system name: `civicrm_newsletter`
+  * Connecting Module: `civicrm_newsletter`
+  * CiviMRF Profile: as configured in the previous step
+* Select defined CiviMRF Connector at
+  `/admin/config/services/civicrm_newsletter`
 ### in Drupal9
 * Add, edit or check CiviMRF Profile (`/admin/config/cmrf_profile`)
 * Add CiviMRF Connector at `/admin/config/cmrf_connector`:
