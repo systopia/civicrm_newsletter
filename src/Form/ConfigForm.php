@@ -16,13 +16,13 @@
 namespace Drupal\civicrm_newsletter\Form;
 
 use Drupal;
+use Drupal\civicrm_newsletter\Form\Callbacks\PathOrUrlCallbacks;
+use Drupal\cmrf_core;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Element\PathElement;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\cmrf_core;
 
 class ConfigForm extends ConfigFormBase {
 
@@ -117,16 +117,16 @@ class ConfigForm extends ConfigFormBase {
     $form['redirect_paths'] = [
       '#tree' => TRUE,
       '#type' => 'details',
-      '#title' => $this->t('Redirect paths'),
-      '#description' => $this->t('You may define paths to redirect to after successful submissions of the respective forms.'),
+      '#title' => $this->t('Redirect paths or URLs'),
+      '#description' => $this->t('You may define paths or URLs to redirect to after successful submissions of the respective forms.'),
       '#open' => !empty($config->get('redirect_paths')),
     ];
     foreach ($settings_definition['mapping']['redirect_paths']['mapping'] as $redirect_path => $definition) {
       $form['redirect_paths'][$redirect_path] = [
-        '#type' => 'path',
+        '#type' => 'textfield',
         '#title' => $definition['label'],
         '#default_value' => $config->get('redirect_paths.' . $redirect_path),
-        '#convert_path' => PathElement::CONVERT_NONE,
+        '#element_validate' => [[PathOrUrlCallbacks::class, 'validate']],
       ];
     }
     $form['redirect_disable_messages'] = [

@@ -28,7 +28,6 @@ use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-
 class SubscriptionForm extends FormBase {
 
   /**
@@ -224,11 +223,7 @@ class SubscriptionForm extends FormBase {
         /* @var Url $url */
         $url = Drupal::service('path.validator')
           ->getUrlIfValid($redirect_path);
-        $form_state->setRedirect(
-          $url->getRouteName(),
-          $url->getRouteParameters(),
-          $url->getOptions()
-        );
+        $form_state->setRedirectUrl($url);
       }
       if (!$form_state->getRedirect() || !$config->get('redirect_disable_messages')) {
         foreach ($messages as $message) {

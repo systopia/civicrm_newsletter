@@ -117,24 +117,24 @@ msgid "Hide checkbox for single mailing list"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the subscription form"
-msgstr "Umleitungs-Pfad für das Abonnement-Formular"
+msgid "Redirect path or URL for the subscription form"
+msgstr "Umleitungs-Pfad oder -URL für das Abonnement-Formular"
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the opt-in page"
-msgstr "Umleitungs-Pfad für die Bestätigungs-Seite"
+msgid "Redirect path or URL for the opt-in page"
+msgstr "Umleitungs-Pfad oder -URL für die Bestätigungs-Seite"
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the preferences form"
-msgstr "Umleitungs-Pfad für das Einstellungs-Formular"
+msgid "Redirect path or URL for the preferences form"
+msgstr "Umleitungs-Pfad oder -URL für das Einstellungs-Formular"
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the preferences form when unsubscribing"
-msgstr "Umleitungs-Pfad für das Einstellungs-Formular bei Abmeldung"
+msgid "Redirect path or URL for the preferences form when unsubscribing"
+msgstr "Umleitungs-Pfad oder -URL für das Einstellungs-Formular bei Abmeldung"
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the request-link form"
-msgstr "Umleitungs-Pfad für das Link-Anforderungs-Formular"
+msgid "Redirect path or URL for the request-link form"
+msgstr "Umleitungs-Pfad oder -URL für das Link-Anforderungs-Formular"
 
 #: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:134
 msgid "Disable status messages when redirecting"
@@ -267,16 +267,16 @@ msgid ""
 msgstr ""
 
 #: src/Form/ConfigForm.php:120
-msgid "Redirect paths"
-msgstr "Umleitungspfade"
+msgid "Redirect paths or URLs"
+msgstr "Umleitungspfade oder -URLs"
 
 #: src/Form/ConfigForm.php:121
 msgid ""
-"You may define paths to redirect to after successful submissions of the "
-"respective forms."
+"You may define paths or URLs to redirect to after successful submissions of "
+"the respective forms."
 msgstr ""
-"Sie können Pfade definieren, zu denen nach erfolgreichen Einsendungen der "
-"einzelnen Formulare umgeleitet werden soll."
+"Sie können Pfade oder URLs definieren, zu denen nach erfolgreichen "
+"Einsendungen der einzelnen Formulare umgeleitet werden soll."
 
 #: src/Form/ConfigForm.php:135
 msgid ""
