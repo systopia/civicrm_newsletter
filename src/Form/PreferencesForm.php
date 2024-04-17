@@ -162,7 +162,8 @@ class PreferencesForm extends FormBase {
         '#value' => 0,
       ];
 
-      $submit_label = $profile->unsubscribe_submit_label;
+      // Fallback for backward compatibility.
+      $submit_label = $profile->unsubscribe_submit_label ?? t('Unsubscribe');
     }
     else {
       // Add mailing lists selection.
