@@ -19,8 +19,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: CiviCRM Advanced Newsletter Management VERSION\n"
-"POT-Creation-Date: 2021-11-10 11:30+0100\n"
-"PO-Revision-Date: 2021-11-10 11:37+0100\n"
+"POT-Creation-Date: 2024-04-17 11:50+0200\n"
+"PO-Revision-Date: 2024-04-17 11:52+0200\n"
 "Last-Translator: \n"
 "Language-Team: EMAIL@ADDRESS\n"
 "Language: de_DE\n"
@@ -28,15 +28,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.0.1\n"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml:0
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.routing.yml:0
+#: civicrm_newsletter.info.yml:0 civicrm_newsletter.links.menu.yml:0
+#: civicrm_newsletter.routing.yml:0
+#: config/install/cmrf_core.cmrf_connector.civicrm_newsletter.yml:0
 msgid "CiviCRM Advanced Newsletter Management"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
+#: civicrm_newsletter.info.yml:0
 msgid ""
 "In combination with the \"Advanced Newsletter Management\" extension, "
 "provides better Newsletter subscription and opt-in forms for CiviCRM "
@@ -46,23 +46,23 @@ msgstr ""
 "Management\" bessere Newsletter-Abonnement- und -Bestätigungs-Formulare für "
 "CiviCRM-Kontakte zur Verfügung."
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.info.yml:0
+#: civicrm_newsletter.info.yml:0
 msgid "CiviCRM"
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.links.menu.yml:0
+#: civicrm_newsletter.links.menu.yml:0
 msgid "Configure settings for CiviCRM Advanced Newsletter Management."
 msgstr "Einstellung für CiviCRM Advanced Newsletter Management konfigurieren."
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Administer CiviCRM Advanced Newsletter Management"
 msgstr "CiviCRM Advanced Newsletter Management verwalten"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Access all newsletter subscription forms"
 msgstr "Auf alle Newsletter-Abonnement-Formulare zugreifen"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid ""
 "Allow users to access the public newsletter subscription form for any "
 "profile."
@@ -70,88 +70,93 @@ msgstr ""
 "Benutzern erlauben, auf das öffentliche Newsletter-Abonnement-Formular für "
 "alle Profile zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Access all newsletter opt-in pages"
 msgstr "Auf alle Newsletter-Bestätigungs-Seiten zugreifen"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Allow users to access the newsletter opt-in page for any profile."
 msgstr ""
 "Benutzern erlauben, auf die Newsletter-Bestätigungs-Seite für alle Profile "
 "zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Access all newsletter preferences forms"
 msgstr "Auf alle Newsletter-Einstellungs-Formulare zugreifen"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Allow users to access the newsletter preferences form for any profile."
 msgstr ""
 "Benutzern erlauben, auf das Newsletter-Einstellungs-Formular für alle "
 "Profile zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Access all newsletter request forms"
 msgstr "Auf alle Newsletter-Link-Anforderungs-Formulare zugreifen"
 
-#: modules/custom/civicrm_newsletter/civicrm_newsletter.permissions.yml:0
+#: civicrm_newsletter.permissions.yml:0
 msgid "Allow users to access the request link form for any profile."
 msgstr ""
 "Benutzern erlauben, auf das Newsletter-Link-Anforderungs-Formular für alle "
 "Profile zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:81
+#: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:81
 msgid "CiviMRF Connector"
 msgstr "CiviMRF-Konnektor"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:96
+#: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:96
 msgid "Confirm subscriptions in preferences form"
 msgstr "Abonnements in Einstellungs-Formular bestätigen"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:103
+msgid "Make parent mailing lists selectable"
+msgstr ""
+
+#: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:110
+msgid "Hide checkbox for single mailing list"
+msgstr ""
+
+#: config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the subscription form"
 msgstr "Umleitungs-Pfad für das Abonnement-Formular"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the opt-in page"
 msgstr "Umleitungs-Pfad für die Bestätigungs-Seite"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the preferences form"
 msgstr "Umleitungs-Pfad für das Einstellungs-Formular"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the preferences form when unsubscribing"
 msgstr "Umleitungs-Pfad für das Einstellungs-Formular bei Abmeldung"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
+#: config/schema/civicrm_newsletter.schema.yml:0
 msgid "Redirect path for the request-link form"
 msgstr "Umleitungs-Pfad für das Link-Anforderungs-Formular"
 
-#: modules/custom/civicrm_newsletter/config/schema/civicrm_newsletter.schema.yml:0
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:120
+#: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:134
 msgid "Disable status messages when redirecting"
 msgstr "Statusmeldungen bei Umleitungen deaktivieren"
 
-#: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
+#: js/civicrm_newsletter.js:0;0
 msgid "Deselect all"
 msgstr "Alle abwählen"
 
-#: modules/custom/civicrm_newsletter/js/civicrm_newsletter.js:0;0
+#: js/civicrm_newsletter.js:0;0
 msgid "Select all"
 msgstr "Alle auswählen"
 
-#: modules/custom/civicrm_newsletter/src/CiviMRF.php:94;132
+#: src/CiviMRF.php:94;132
 msgid "%type: @message in %function (line %line of %file)."
 msgstr ""
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:71
+#: src/Permissions.php:71
 msgid "Access newsletter subscription form with profile %profile_name"
 msgstr "Auf Newsletter-Abonnement-Formulare mit Profil %profile_name zugreifen"
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:75
+#: src/Permissions.php:75
 msgid ""
 "Allow users to access the public newsletter subscription form with profile "
 "%profile_name."
@@ -159,23 +164,23 @@ msgstr ""
 "Benutzern erlauben, auf das öffentliche Newsletter-Abonnement-Formular für "
 "das Profil %profile_name zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:81
+#: src/Permissions.php:81
 msgid "Access newsletter opt-in page with profile %profile_name"
 msgstr "Auf Newsletter-Bestätigungs-Seiten mit Profil %profile_name zugreifen"
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:85
+#: src/Permissions.php:85
 msgid ""
 "Allow users to access the newsletter opt-in page with profile %profile_name."
 msgstr ""
 "Benutzern erlauben, auf die Newsletter-Bestätigungs-Seite für das Profil "
 "%profile_name zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:91
+#: src/Permissions.php:91
 msgid "Access newsletter preferences form with profile %profile_name"
 msgstr ""
 "Auf Newsletter-Einstellungs-Formulare mit Profil %profile_name zugreifen"
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:95
+#: src/Permissions.php:95
 msgid ""
 "Allow users to access the newsletter preferences form with profile "
 "%profile_name."
@@ -183,20 +188,19 @@ msgstr ""
 "Benutzern erlauben, auf das Newsletter-Einstellungs-Formular für das Profil "
 "%profile_name zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:101
+#: src/Permissions.php:101
 msgid "Access newsletter request form with profile %profile_name"
 msgstr ""
 "Auf Newsletter-Link-Anforderungs-Formulare mit Profil %profile_name zugreifen"
 
-#: modules/custom/civicrm_newsletter/src/Permissions.php:105
+#: src/Permissions.php:105
 msgid "Allow users to access the request link form for profile %profile_name."
 msgstr ""
 "Benutzern erlauben, auf das Newsletter-Link-Anforderungs-Formular für Profil "
 "%profile_name zuzugreifen."
 
-#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:110
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:91
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:83
+#: src/Controller/OptIn.php:110 src/Form/PreferencesForm.php:91
+#: src/Form/RequestLinkForm.php:84
 msgid ""
 "Could not retrieve the newsletter subscription status. Please request a new "
 "confirmation link."
@@ -204,8 +208,7 @@ msgstr ""
 "Newsletter-Abonnement-Status konnte nicht abgerufen werden. Bitte fordern "
 "Sie einen neuen Bestätigungs-Link an."
 
-#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:127
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:109
+#: src/Controller/OptIn.php:127 src/Form/PreferencesForm.php:109
 msgid ""
 "Your confirmation of pending subscriptions could not be submitted, please "
 "try again later."
@@ -213,8 +216,7 @@ msgstr ""
 "Ihre Bestätigung ausstehender Abonnements konnte nicht übertragen werden, "
 "bitte später erneut versuchen."
 
-#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:133
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:115
+#: src/Controller/OptIn.php:133 src/Form/PreferencesForm.php:115
 msgid ""
 "Your confirmation of pending subscriptions has been successfully submitted. "
 "You will receive an e-mail with a summary of your subscriptions."
@@ -222,8 +224,7 @@ msgstr ""
 "Ihre Bestätigung ausstehender Abonnements wurde erfolgreich übermittelt. Sie "
 "erhalten eine E-Mail mit einer Zusammenfassung Ihrer Abonnements."
 
-#: modules/custom/civicrm_newsletter/src/Controller/OptIn.php:139
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:120
+#: src/Controller/OptIn.php:139 src/Form/PreferencesForm.php:120
 msgid ""
 "Your confirmation of pending subscriptions has been successfully submitted, "
 "but no subscriptions were pending to be confirmed."
@@ -231,18 +232,18 @@ msgstr ""
 "Ihre Bestätigung ausstehender Abonnements wurde erfolgreich übermittelt, "
 "aber es waren keine Abonnements zur Bestätigung ausstehend."
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:82
+#: src/Form/ConfigForm.php:82
 msgid ""
 "The CiviMRF connector to use for connecting to CiviCRM. @cmrf_connectors_link"
 msgstr ""
 "Der CiviMRF-Konnektor, der für die Verbindung zu CiviCRM verwendet werden "
 "soll. @cmrf_connectors_link"
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:85
+#: src/Form/ConfigForm.php:85
 msgid "Configure CiviMRF Connectors"
 msgstr "CiviMRF-Konnektoren konfigurieren"
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:97
+#: src/Form/ConfigForm.php:97
 msgid ""
 "Whether to automatically confirm pending subscriptions when loading the "
 "preferences form. When this is disabled, subscriptions can only be confirmed "
@@ -252,11 +253,24 @@ msgstr ""
 "bestätigen. Wenn diese Option deaktiviert ist, können Abonnements nur über "
 "die Bestätigungs-URL (Opt-In-URL) bestätigt werden."
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:106
+#: src/Form/ConfigForm.php:104
+msgid ""
+"Whether parent mailings lists in the group hierarchy should be selectable. "
+"Otherwise, they will only show as fieldset labels for their children."
+msgstr ""
+
+#: src/Form/ConfigForm.php:111
+msgid ""
+"Whether to hide the mailing list checkbox when there is only one available. "
+"Otherwise, users will have to actively enable the single mailing list for "
+"subscribing."
+msgstr ""
+
+#: src/Form/ConfigForm.php:120
 msgid "Redirect paths"
 msgstr "Umleitungspfade"
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:107
+#: src/Form/ConfigForm.php:121
 msgid ""
 "You may define paths to redirect to after successful submissions of the "
 "respective forms."
@@ -264,7 +278,7 @@ msgstr ""
 "Sie können Pfade definieren, zu denen nach erfolgreichen Einsendungen der "
 "einzelnen Formulare umgeleitet werden soll."
 
-#: modules/custom/civicrm_newsletter/src/Form/ConfigForm.php:121
+#: src/Form/ConfigForm.php:135
 msgid ""
 "Whether to not show status messages when redirecting. This may be useful "
 "when you want full control over what to display to the user on a separate "
@@ -274,26 +288,28 @@ msgstr ""
 "wenn Sie die volle Kontrolle darüber haben wollen, was dem Benutzer auf "
 "einer separaten Seite angezeigt werden soll."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:150
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:131
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:94
+#: src/Form/PreferencesForm.php:150 src/Form/RequestLinkForm.php:132
+#: src/Form/SubscriptionForm.php:97
 msgid "- None -"
-msgstr ""
+msgstr "- Nicht festgelegt/ausgewählt -"
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:203
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:140
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:125
+#: src/Form/PreferencesForm.php:166
+msgid "Unsubscribe"
+msgstr "Abmelden"
+
+#: src/Form/PreferencesForm.php:184 src/Form/RequestLinkForm.php:141
+#: src/Form/SubscriptionForm.php:139
 msgid "Submit"
-msgstr ""
+msgstr "Absenden"
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:235
+#: src/Form/PreferencesForm.php:271
 msgid ""
 "Your subscription preferences could not be submitted, please try again later."
 msgstr ""
 "Ihre Abonnementeinstellungen konnte nicht übermittelt werden, bitte "
 "versuchen Sie es später erneut."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:243
+#: src/Form/PreferencesForm.php:279
 msgid ""
 "Your unsubscription has been successfully submitted. You will receive an e-"
 "mail with a confirmation of your unsubscription."
@@ -301,7 +317,7 @@ msgstr ""
 "Ihre Abmeldung wurde erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
 "einer Bestätigung Ihrer Abmeldung."
 
-#: modules/custom/civicrm_newsletter/src/Form/PreferencesForm.php:249
+#: src/Form/PreferencesForm.php:285
 msgid ""
 "Your subscription preferences have been successfully submitted. You will "
 "receive an e-mail with a summary of your subscriptions."
@@ -309,13 +325,13 @@ msgstr ""
 "Ihre Abonnementeinstellungen wurden erfolgreich übermittelt. Sie erhalten "
 "eine E-Mail mit einer Zusammenfassung Ihrer Abonnements."
 
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:101;161
+#: src/Form/RequestLinkForm.php:102;187
 msgid "Your request could not be submitted, please try again later."
 msgstr ""
 "Ihre Anfrage konnte nicht übermittelt werden, bitte versuchen Sie es später "
 "erneut."
 
-#: modules/custom/civicrm_newsletter/src/Form/RequestLinkForm.php:107;167
+#: src/Form/RequestLinkForm.php:108;194
 msgid ""
 "Your request has been successfully submitted. You will receive an e-mail "
 "with a link to a confirmation page."
@@ -323,18 +339,18 @@ msgstr ""
 "Ihre Anfrage wurder erfolgreich übermittelt. Sie erhalten eine E-Mail mit "
 "einem Link zu einer Bestätigungsseite."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:147
+#: src/Form/SubscriptionForm.php:174
 msgid "Please select at least one mailing list to subscribe to."
 msgstr ""
 "Bitte mindestens einen Newsletter auswählen, den Sie abonnieren möchten."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:176
+#: src/Form/SubscriptionForm.php:213
 msgid "Your subscription could not be submitted, please try again later."
 msgstr ""
 "Ihr Abonnement konnte nicht übermittelt werden, bitte versuchen Sie es "
 "später erneut."
 
-#: modules/custom/civicrm_newsletter/src/Form/SubscriptionForm.php:182
+#: src/Form/SubscriptionForm.php:220
 msgid ""
 "Your subscription has been successfully submitted. You will receive an e-"
 "mail with a link to a confirmation page. Your subscription will not be "

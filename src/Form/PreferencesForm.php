@@ -153,22 +153,40 @@ class PreferencesForm extends FormBase {
       }
     }
 
-    // Add mailing lists selection.
-    $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes(
-      $profile->mailing_lists_tree,
-      $subscription['subscription_status']
-    );
-    $form['mailing_lists']['#type'] = 'fieldset';
-    $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
-    $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
-    $form['mailing_lists']['#attributes'] = [
-      'class' => [
-        'form-item-mailing-lists',
-      ],
-    ];
-    $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
+    $hideLists = $config->get('single_group_hide') && 1 === count($profile->mailing_lists);
+    if ($hideLists) {
+      // Show no selection if there's only one mailing list.
+      $mailing_list_id = key($profile->mailing_lists);
+      $form['mailing_lists_' . $mailing_list_id] = [
+        '#type' => 'value',
+        '#value' => 0,
+      ];
 
-    if (!empty($profile->mailing_lists_unsubscribe_all)) {
+      // Fallback for backward compatibility.
+      $submit_label = $profile->unsubscribe_submit_label ?? t('Unsubscribe');
+    }
+    else {
+      // Add mailing lists selection.
+      $form['mailing_lists'] = Utils::mailingListsTreeCheckboxes(
+        $profile->mailing_lists_tree,
+        $subscription['subscription_status']
+      );
+      $form['mailing_lists']['#type'] = 'fieldset';
+      $form['mailing_lists']['#title'] = $profile->mailing_lists_label;
+      $form['mailing_lists']['#description'] = $profile->mailing_lists_description;
+      $form['mailing_lists']['#attributes'] = [
+        'class' => [
+          'form-item-mailing-lists',
+        ],
+      ];
+      $form['mailing_lists']['#attached']['library'][] = 'civicrm_newsletter/civicrm_newsletter';
+
+      $submit_label = $profile->submit_label ?: t('Submit');
+    }
+
+    if (!empty($profile->mailing_lists_unsubscribe_all) &&
+      (!$hideLists || !empty($profile->mailing_lists_unsubscribe_all_profiles))
+    ) {
       $form['unsubscribe'] = [
         '#type' => 'fieldset',
         '#title' => $profile->mailing_lists_unsubscribe_all_label,
@@ -198,10 +216,9 @@ class PreferencesForm extends FormBase {
       ];
     }
 
-    // Add submit button with configured label, if given.
     $form['submit'] = [
       '#type' => 'submit',
-      '#value' => $profile->submit_label ?: t('Submit'),
+      '#value' => $submit_label,
     ];
 
     return $form;
@@ -231,9 +248,19 @@ class PreferencesForm extends FormBase {
         }, ARRAY_FILTER_USE_BOTH);
       }
     }
-    $params['mailing_lists'] = array_map(function($value) {
-      return ($value ? 'Added' : 'Removed');
+    $hasSubscription = FALSE;
+    $params['mailing_lists'] = array_map(function($value) use (&$hasSubscription) {
+      if ($value) {
+        $hasSubscription = TRUE;
+
+        return 'Added';
+      }
+
+      return 'Removed';
     }, $params['mailing_lists']);
+    if ($params['unsubscribe_all']) {
+      $hasSubscription = FALSE;
+    }
 
     // Submit the subscription using CiviMRF.
     $result = $this->cmrf->subscriptionConfirm($params);
@@ -246,7 +273,7 @@ class PreferencesForm extends FormBase {
       $form_state->setRebuild();
       return;
     }
-    elseif ($params['unsubscribe_all']) {
+    elseif (!$hasSubscription) {
       $messages[] = [
         'status' => Drupal::messenger()::TYPE_STATUS,
         'message' => $this->t('Your unsubscription has been successfully submitted. You will receive an e-mail with a confirmation of your unsubscription.'),
@@ -261,7 +288,7 @@ class PreferencesForm extends FormBase {
 
     // Redirect to target from configuration.
     if (
-      $params['unsubscribe_all']
+      !$hasSubscription
       && !empty($redirect_path = $config->get('redirect_paths.unsubscribe'))
     ) {
       /* @var Url $url */
