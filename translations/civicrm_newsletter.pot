@@ -100,23 +100,23 @@ msgid "Hide checkbox for single mailing list"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the subscription form"
+msgid "Redirect path or URL for the subscription form"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the opt-in page"
+msgid "Redirect path or URL for the opt-in page"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the preferences form"
+msgid "Redirect path or URL for the preferences form"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the preferences form when unsubscribing"
+msgid "Redirect path or URL for the preferences form when unsubscribing"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0
-msgid "Redirect path for the request-link form"
+msgid "Redirect path or URL for the request-link form"
 msgstr ""
 
 #: config/schema/civicrm_newsletter.schema.yml:0 src/Form/ConfigForm.php:134
@@ -204,11 +204,11 @@ msgid "Whether to hide the mailing list checkbox when there is only one availabl
 msgstr ""
 
 #: src/Form/ConfigForm.php:120
-msgid "Redirect paths"
+msgid "Redirect paths or URLs"
 msgstr ""
 
 #: src/Form/ConfigForm.php:121
-msgid "You may define paths to redirect to after successful submissions of the respective forms."
+msgid "You may define paths or URLs to redirect to after successful submissions of the respective forms."
 msgstr ""
 
 #: src/Form/ConfigForm.php:135

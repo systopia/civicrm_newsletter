@@ -18,19 +18,19 @@ civicrm_newsletter.settings:
       mapping:
         subscription_form:
           type: string
-          label: 'Redirect path for the subscription form'
+          label: 'Redirect path or URL for the subscription form'
         optin_page:
           type: string
-          label: 'Redirect path for the opt-in page'
+          label: 'Redirect path or URL for the opt-in page'
         preferences_form:
           type: string
-          label: 'Redirect path for the preferences form'
+          label: 'Redirect path or URL for the preferences form'
         unsubscribe:
           type: string
-          label: 'Redirect path for the preferences form when unsubscribing'
+          label: 'Redirect path or URL for the preferences form when unsubscribing'
         request_link_form:
           type: string
-          label: 'Redirect path for the request-link form'
+          label: 'Redirect path or URL for the request-link form'
     redirect_disable_messages:
       type: boolean
       label: 'Disable status messages when redirecting'
