@@ -90,6 +90,7 @@ class SubscriptionForm extends FormBase {
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#required' => !empty($contact_field['required']),
+          '#default_value' => $this->getRequest()->get($contact_field_name),
         );
         if (!empty($contact_field['options'])) {
           $form[$contact_field_name]['#options'] = $contact_field['options'];
