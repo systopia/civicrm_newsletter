@@ -20,6 +20,7 @@ use Drupal\civicrm_newsletter\CiviMRF;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use stdClass;
@@ -144,15 +145,11 @@ class OptIn extends ControllerBase {
     // Redirect to target from configuration.
     if (!empty($redirect_path = $config->get('redirect_paths.optin_page'))) {
       /* @var Url $url */
-      $url = Drupal::service('path.validator')
-        ->getUrlIfValid($redirect_path);
-      $page = $this->redirect(
-        $url->getRouteName(),
-        $url->getRouteParameters(),
-        $url->getOptions()
-      );
+      $url = Drupal::service('path.validator')->getUrlIfValid($redirect_path);
+      $page = new TrustedRedirectResponse($url->getUri());
     }
-    if (!is_a($page, RedirectResponse::class) || !$config->get('redirect_disable_messages')) {
+
+    if (!$page instanceof RedirectResponse || !$config->get('redirect_disable_messages')) {
       foreach ($messages as $message) {
         switch ($message['status']) {
           case Drupal::messenger()::TYPE_STATUS:
