@@ -22,11 +22,13 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultReasonInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 use stdClass;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SubscriptionForm extends FormBase {
 
@@ -221,11 +223,18 @@ class SubscriptionForm extends FormBase {
       // Redirect to target from configuration.
       if (!empty($redirect_path = $config->get('redirect_paths.subscription_form'))) {
         /* @var Url $url */
-        $url = Drupal::service('path.validator')
-          ->getUrlIfValid($redirect_path);
-        $form_state->setRedirectUrl($url);
+        $url = Drupal::service('path.validator')->getUrlIfValid($redirect_path);
+        if ($url->isRouted()) {
+          $form_state->setRedirectUrl($url);
+        }
+        else {
+          $form_state->setResponse(new TrustedRedirectResponse($url->getUri()));
+        }
       }
-      if (!$form_state->getRedirect() || !$config->get('redirect_disable_messages')) {
+
+      if ((!$form_state->getRedirect() && !$form_state->getResponse() instanceof RedirectResponse)
+        || !$config->get('redirect_disable_messages')
+      ) {
         foreach ($messages as $message) {
           switch ($message['status']) {
             case Drupal::messenger()::TYPE_STATUS:
