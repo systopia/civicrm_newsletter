@@ -122,11 +122,12 @@ class RequestLinkForm extends FormBase {
       // Add contact fields.
       foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
         if ($contact_field['active']) {
-          $form[$contact_field_name] = array(
+          $form['contact-fields'][$contact_field_name] = array(
             '#type' => Utils::getContactFieldType($contact_field),
             '#title' => $contact_field['label'],
             '#description' => $contact_field['description'],
             '#required' => !empty($contact_field['required']),
+            '#weight' => filter_var($contact_field['weight'], FILTER_VALIDATE_INT) !== false ? $contact_field['weight'] : 0,
           );
           if (!empty($contact_field['options'])) {
             $form[$contact_field_name]['#options'] = $contact_field['options'];

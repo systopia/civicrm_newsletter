@@ -137,13 +137,14 @@ class PreferencesForm extends FormBase {
     // Add contact fields.
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if ($contact_field['active']) {
-        $form[$contact_field_name] = [
+        $form['contact-fields'][$contact_field_name] = [
           '#type' => Utils::getContactFieldType($contact_field),
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
           '#default_value' => $subscription['contact'][$contact_field_name],
           '#required' => !empty($contact_field['required']),
           '#disabled' => TRUE,
+          '#weight' => filter_var($contact_field['weight'], FILTER_VALIDATE_INT) !== false ? $contact_field['weight'] : 0,
         ];
         if (!empty($contact_field['options'])) {
           $form[$contact_field_name]['#options'] = $contact_field['options'];
