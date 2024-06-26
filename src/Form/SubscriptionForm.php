@@ -85,7 +85,7 @@ class SubscriptionForm extends FormBase {
     // Build form according to received configuration:
     // Add contact fields.
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
-      if ($contact_field['active']) {
+      if (isset($contact_field['active']) && $contact_field['active']) {
         $form['contact-fields'][$contact_field_name] = array(
           '#type' => Utils::getContactFieldType($contact_field),
           '#title' => $contact_field['label'],
