@@ -128,7 +128,7 @@ class RequestLinkForm extends FormBase {
             '#description' => $contact_field['description'],
             '#required' => !empty($contact_field['required']),
             '#weight' => isset($contact_field['weight'])
-                      && filter_var($contact_field['weight'], FILTER_VALIDATE_INT) !== false
+                      && filter_var($contact_field['weight'], FILTER_VALIDATE_INT) !== FALSE
                       ? $contact_field['weight'] : 0,
           );
           if (!empty($contact_field['options'])) {
