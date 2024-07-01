@@ -86,7 +86,7 @@ class SubscriptionForm extends FormBase {
     // Add contact fields.
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if (isset($contact_field['active']) && $contact_field['active']) {
-        $form['contact-fields'][$contact_field_name] = array(
+        $form['contact_fields'][$contact_field_name] = array(
           '#type' => Utils::getContactFieldType($contact_field),
           '#title' => $contact_field['label'],
           '#description' => $contact_field['description'],
@@ -96,9 +96,9 @@ class SubscriptionForm extends FormBase {
                     ? $contact_field['weight'] : 0,
         );
         if (!empty($contact_field['options'])) {
-          $form['contact-fields'][$contact_field_name]['#options'] = $contact_field['options'];
+          $form['contact_fields'][$contact_field_name]['#options'] = $contact_field['options'];
           if (empty($contact_field['required'])) {
-            $form['contact-fields'][$contact_field_name]['#empty_option'] = t('- None -');
+            $form['contact_fields'][$contact_field_name]['#empty_option'] = t('- None -');
           }
         }
       }
