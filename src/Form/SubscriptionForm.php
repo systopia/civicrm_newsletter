@@ -83,7 +83,29 @@ class SubscriptionForm extends FormBase {
     );
 
     // Build form according to received configuration:
-    // Add contact fields.
+
+    // Add form description fields as empty fieldsets.
+    // - Only use the #description attribute of fieldsets in order to show unformated,
+    //   multiline text without scrollbars or color formating.
+    // - #description text is automatically scalled to window width.
+    foreach ($profile->contact_form_descriptions as $contact_form_description_name => $contact_form_description_data) {
+      $is_active = isset($contact_form_description_data['active']) && $contact_form_description_data['active'];
+      $has_description = isset($contact_form_description_data['description']) && strlen($contact_form_description_data['description']) > 0;
+
+      if ($is_active && $has_description) {
+        $has_weight = isset($contact_form_description_data['weight'])
+                           && filter_var($contact_form_description_data['weight'], FILTER_VALIDATE_INT) !== FALSE;
+        $weight = $has_weight ? $contact_form_description_data['weight'] : 0;
+
+        $form['contact_fields'][$contact_form_description_name] = array(
+          '#type' => 'fieldset',
+          '#disabled' => TRUE,
+          '#description' => $contact_form_description_data['description'],
+          '#weight' => $weight,
+        );
+      }
+    }
+
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if (isset($contact_field['active']) && $contact_field['active']) {
         $form['contact_fields'][$contact_field_name] = array(
