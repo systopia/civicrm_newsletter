@@ -88,23 +88,21 @@ class SubscriptionForm extends FormBase {
     // - Only use the #description attribute of fieldsets in order to show unformated,
     //   multiline text without scrollbars or color formating.
     // - #description text is automatically scalled to window width.
-    if (isset($profile->contact_form_descriptions)) {
-      foreach ($profile->contact_form_descriptions as $contact_form_description_name => $contact_form_description_data) {
-        $is_active = (bool) ($contact_form_description_data['active'] ?? FALSE);
-        $has_description = '' !== ($contact_form_description_data['description'] ?? '');
-        
-        if ($is_active && $has_description) {
-          $has_weight = isset($contact_form_description_data['weight'])
-                              && filter_var($contact_form_description_data['weight'], FILTER_VALIDATE_INT) !== FALSE;
-          $weight = $has_weight ? $contact_form_description_data['weight'] : 0;
+    foreach ($profile->contact_form_descriptions ?? [] as $contact_form_description_name => $contact_form_description_data) {
+      if (
+        (bool) ($contact_form_description_data['active'] ?? FALSE)
+        && ('' !== ($contact_form_description_data['description'] ?? ''))
+      ) {
+        $has_weight = isset($contact_form_description_data['weight'])
+                            && filter_var($contact_form_description_data['weight'], FILTER_VALIDATE_INT) !== FALSE;
+        $weight = $has_weight ? $contact_form_description_data['weight'] : 0;
 
-          $form['contact_fields'][$contact_form_description_name] = array(
-            '#type' => 'markup',
-            '#disabled' => TRUE,
-            '#markup' => $contact_form_description_data['description'],
-            '#weight' => $weight,
-          );
-        }
+        $form['contact_fields'][$contact_form_description_name] = array(
+          '#type' => 'markup',
+          '#disabled' => TRUE,
+          '#markup' => $contact_form_description_data['description'],
+          '#weight' => $weight,
+        );
       }
     }
     
