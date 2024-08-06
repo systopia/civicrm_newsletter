@@ -147,7 +147,7 @@ class OptIn extends ControllerBase {
       /* @var Url $url */
       $url = Drupal::service('path.validator')->getUrlIfValid($redirect_path);
       $url->setAbsolute(TRUE);
-      $page = new TrustedRedirectResponse($url->toString(TRUE));
+      $page = new TrustedRedirectResponse($url->toString(TRUE)->getGeneratedUrl());
     }
 
     if (!$page instanceof RedirectResponse || !$config->get('redirect_disable_messages')) {
