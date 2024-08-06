@@ -29,6 +29,7 @@ class Utils {
     return array(
       'Select' => 'select',
       'Multi-Select' => 'checkboxes',
+      'Number' => 'number',
       'Text' => 'textfield',
       'Textarea' => 'textarea',
       'CheckBox' => 'checkbox',
