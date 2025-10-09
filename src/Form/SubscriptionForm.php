@@ -117,6 +117,7 @@ class SubscriptionForm extends FormBase {
           '#weight' => isset($contact_field['weight'])
                     && filter_var($contact_field['weight'], FILTER_VALIDATE_INT) !== FALSE
                     ? $contact_field['weight'] : 0,
+          '#default_value' => $this->getRequest()->get($contact_field_name),
         );
         if (!empty($contact_field['options'])) {
           $form['contact_fields'][$contact_field_name]['#options'] = $contact_field['options'];
