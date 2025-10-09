@@ -19,7 +19,7 @@ civicrm_newsletter.subscription_form:
         type: civicrm_newsletter_profile
 
 civicrm_newsletter.optin:
-  path: '/civicrm_newsletter/optin/{profile}/{contact_hash}'
+  path: '/civicrm_newsletter/optin/{profile}/{contact_checksum}'
   defaults:
     _title_callback: '\Drupal\civicrm_newsletter\Controller\OptIn::title'
     _controller: '\Drupal\civicrm_newsletter\Controller\OptIn::buildPage'
@@ -29,12 +29,12 @@ civicrm_newsletter.optin:
     parameters:
       profile:
         type: civicrm_newsletter_profile
-      contact_hash:
+      contact_checksum:
         type: string
     no_cache: TRUE
 
 civicrm_newsletter.preferences_form:
-  path: '/civicrm_newsletter/preferences/{profile}/{contact_hash}'
+  path: '/civicrm_newsletter/preferences/{profile}/{contact_checksum}'
   defaults:
     _title_callback: '\Drupal\civicrm_newsletter\Form\PreferencesForm::title'
     _form: '\Drupal\civicrm_newsletter\Form\PreferencesForm'
@@ -44,21 +44,21 @@ civicrm_newsletter.preferences_form:
     parameters:
       profile:
         type: civicrm_newsletter_profile
-      contact_hash:
+      contact_checksum:
         type: string
     no_cache: TRUE
 
 civicrm_newsletter.request_link_form:
-  path: '/civicrm_newsletter/request_link/{profile}/{contact_hash}'
+  path: '/civicrm_newsletter/request_link/{profile}/{contact_checksum}'
   defaults:
     _title_callback: '\Drupal\civicrm_newsletter\Form\RequestLinkForm::title'
     _form: '\Drupal\civicrm_newsletter\Form\RequestLinkForm'
-    contact_hash: null
+    contact_checksum: null
   requirements:
     _custom_access: '\Drupal\civicrm_newsletter\Form\RequestLinkForm::access'
   options:
     parameters:
       profile:
         type: civicrm_newsletter_profile
-      contact_hash:
+      contact_checksum:
         type: string
