@@ -73,7 +73,7 @@ class SubscriptionForm extends FormBase {
   /**
    * @inheritDoc
    */
-  public function buildForm(array $form, FormStateInterface $form_state, stdClass $profile = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?stdClass $profile = NULL) {
     $config = Drupal::config('civicrm_newsletter.settings');
 
     // Include the Advanced Newsletter Management profile name.
@@ -105,7 +105,7 @@ class SubscriptionForm extends FormBase {
         );
       }
     }
-    
+
     // Add contact fields.
     foreach ($profile->contact_fields as $contact_field_name => $contact_field) {
       if (isset($contact_field['active']) && $contact_field['active']) {

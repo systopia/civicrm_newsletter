@@ -76,7 +76,7 @@ class RequestLinkForm extends FormBase {
   public function buildForm(
     array $form,
     FormStateInterface $form_state,
-    stdClass $profile = NULL,
+    ?stdClass $profile = NULL,
     $contact_checksum = NULL
   ) {
     // If a checksum is given, submit to the request API action without showing a form.
