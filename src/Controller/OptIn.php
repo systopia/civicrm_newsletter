@@ -95,12 +95,12 @@ class OptIn extends ControllerBase {
   /**
    * Build the opt-in page
    *
-   * @param stdClass $profile
+   * @param stdClass|null $profile
    *   The Advanced Newsletter Management profile.
-   * @param null $contact_checksum
+   * @param string|null $contact_checksum
    *   The CiviCRM Contact checksum identifying the newsletter subscriber.
    */
-  public function buildPage(stdClass $profile = NULL, $contact_checksum = NULL) {
+  public function buildPage(?stdClass $profile = NULL, ?string $contact_checksum = NULL) {
     $config = Drupal::config('civicrm_newsletter.settings');
     $page = [];
     $messages = [];

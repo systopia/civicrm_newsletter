@@ -75,7 +75,7 @@ class PreferencesForm extends FormBase {
   public function buildForm(
     array $form,
     FormStateInterface $form_state,
-    stdClass $profile = NULL,
+    ?stdClass $profile = NULL,
     $contact_checksum = NULL
   ) {
     $config = Drupal::config('civicrm_newsletter.settings');
